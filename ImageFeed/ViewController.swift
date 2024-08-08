@@ -8,6 +8,11 @@
 import UIKit
 
 class ViewController: UIViewController {
+    
+    // меняем цвет текста в статус баре, т.к. фон приложения темный
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
