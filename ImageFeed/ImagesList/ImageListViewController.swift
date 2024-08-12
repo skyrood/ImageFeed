@@ -11,7 +11,7 @@ class ImageListViewController: UIViewController {
     
     @IBOutlet private var tableView: UITableView!
     
-    // меняем цвет текста в статус баре, т.к. фон приложения темный
+    // changing status bar icons to white because the app background is dark
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
@@ -20,17 +20,19 @@ class ImageListViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
         
+        // Setting the insets for the table
         tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
     }
 }
 
 extension ImageListViewController: UITableViewDataSource {
+    // method for setting the number of cells
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return photosNames.count
     }
     
+    // method for creating or reusing cells
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: ImageListCell.reuseIdentifier, for: indexPath)
         
@@ -50,7 +52,8 @@ extension ImageListViewController: UITableViewDataSource {
 }
 
 extension ImageListViewController {
-    func configCell(for cell: ImageListCell, with indexPath: IndexPath) { 
+    // method for filling custom cells
+    func configCell(for cell: ImageListCell, with indexPath: IndexPath) {
         
         let currentIndex = indexPath.row
         
@@ -74,6 +77,7 @@ extension ImageListViewController {
 extension ImageListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) { }
     
+    // method for setting the cell height dynamically
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let imageName = photosNames[indexPath.row]
         
