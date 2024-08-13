@@ -49,7 +49,7 @@
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="30" id="WYu-im-4tG"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                     <color key="textColor" name="YP White"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
