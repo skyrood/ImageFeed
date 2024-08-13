@@ -62,7 +62,7 @@ extension ImageListViewController {
         
         cell.dateLabel.text = formatDate(Date())
                 
-        if currentIndex == 0 || currentIndex % 2 == 0 {
+        if currentIndex % 2 == 0 {
             if let backgroundImage = UIImage(named: "LikeButtonOn") {
                 cell.likeButton.setBackgroundImage(backgroundImage, for: .normal)
             }
