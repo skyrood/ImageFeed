@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		97B23FF52C6A77B50022C3F8 /* DateTimeFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B23FF42C6A77B50022C3F8 /* DateTimeFormatter.swift */; };
+		97B23FF72C6B80410022C3F8 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B23FF62C6B80410022C3F8 /* ProfileViewController.swift */; };
+		97B23FF92C6E5F7B0022C3F8 /* SingleImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B23FF82C6E5F7B0022C3F8 /* SingleImageViewController.swift */; };
 		97F1AB312C64CD91000BFA47 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97F1AB302C64CD91000BFA47 /* AppDelegate.swift */; };
 		97F1AB332C64CD91000BFA47 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97F1AB322C64CD91000BFA47 /* SceneDelegate.swift */; };
 		97F1AB352C64CD91000BFA47 /* ImageListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97F1AB342C64CD91000BFA47 /* ImageListViewController.swift */; };
@@ -19,6 +21,8 @@
 
 /* Begin PBXFileReference section */
 		97B23FF42C6A77B50022C3F8 /* DateTimeFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateTimeFormatter.swift; sourceTree = "<group>"; };
+		97B23FF62C6B80410022C3F8 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		97B23FF82C6E5F7B0022C3F8 /* SingleImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleImageViewController.swift; sourceTree = "<group>"; };
 		97F1AB2D2C64CD91000BFA47 /* ImageFeed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImageFeed.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		97F1AB302C64CD91000BFA47 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		97F1AB322C64CD91000BFA47 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -76,6 +80,8 @@
 				97F1AB392C64CD96000BFA47 /* Assets.xcassets */,
 				97F1AB3B2C64CD96000BFA47 /* LaunchScreen.storyboard */,
 				97F1AB3E2C64CD96000BFA47 /* Info.plist */,
+				97B23FF62C6B80410022C3F8 /* ProfileViewController.swift */,
+				97B23FF82C6E5F7B0022C3F8 /* SingleImageViewController.swift */,
 			);
 			path = ImageFeed;
 			sourceTree = "<group>";
@@ -160,8 +166,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				97B23FF72C6B80410022C3F8 /* ProfileViewController.swift in Sources */,
 				97B23FF52C6A77B50022C3F8 /* DateTimeFormatter.swift in Sources */,
 				97F1AB352C64CD91000BFA47 /* ImageListViewController.swift in Sources */,
+				97B23FF92C6E5F7B0022C3F8 /* SingleImageViewController.swift in Sources */,
 				97F1AB452C6664F4000BFA47 /* ImageListCell.swift in Sources */,
 				97F1AB312C64CD91000BFA47 /* AppDelegate.swift in Sources */,
 				97F1AB332C64CD91000BFA47 /* SceneDelegate.swift in Sources */,
