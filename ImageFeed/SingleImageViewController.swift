@@ -33,7 +33,6 @@ class SingleImageViewController: UIViewController {
         imageView.frame.size = image.size
         rescaleAndCenterImageInScrollView(image: image)
         
-        // back button
         backButton.translatesAutoresizingMaskIntoConstraints = false
         
         let backButtonImage = UIImage(named: "BackButton")
@@ -56,11 +55,7 @@ class SingleImageViewController: UIViewController {
             backButton.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         }
     }
-
-    func scrollViewDidZoom(_ scrollView: UIScrollView) {
-        updateScrollViewInsets()
-    }
-    
+ 
     @IBAction func didTapBackButton(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
@@ -69,6 +64,10 @@ class SingleImageViewController: UIViewController {
         guard let image else { return }
         let shareView = UIActivityViewController(activityItems: [image], applicationActivities: nil)
         present(shareView, animated: true, completion: nil)
+    }
+    
+    func scrollViewDidZoom(_ scrollView: UIScrollView) {
+        updateScrollViewInsets()
     }
     
     private func rescaleAndCenterImageInScrollView(image: UIImage) {
