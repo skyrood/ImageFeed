@@ -7,22 +7,41 @@
 
 import UIKit
 
-class ImageListViewController: UIViewController {
+final class ImageListViewController: UIViewController {
     
     @IBOutlet private var tableView: UITableView!
+    
+    private let photosNames: [String] = Array(0..<20).map{ "\($0)" }
+    
+    private let showSingleImageSegueIdentifier = "ShowSingleImage"
     
     // changing status bar icons to white because the app background is dark
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
     
-    private let photosNames: [String] = Array(0..<20).map{ "\($0)" }
-
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Setting the insets for the table
         tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == showSingleImageSegueIdentifier {
+            guard
+                let viewController = segue.destination as? SingleImageViewController,
+                let indexPath = sender as? IndexPath
+            else {
+                assertionFailure("Invalid segue destination")
+                return
+            }
+            
+            let image = UIImage(named: photosNames[indexPath.row])
+            viewController.image = image
+        } else {
+            super.prepare(for: segue, sender: sender)
+        }
     }
 }
 
@@ -43,9 +62,7 @@ extension ImageListViewController: UITableViewDataSource {
         
         imageListCell.imageContainer.layer.cornerRadius = 16
         imageListCell.imageContainer.layer.masksToBounds = true
-                
-        imageListCell.isUserInteractionEnabled = false
-        
+
         configCell(for: imageListCell, with: indexPath)
         return imageListCell
     }
@@ -75,7 +92,9 @@ extension ImageListViewController {
 }
 
 extension ImageListViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) { }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        performSegue(withIdentifier: showSingleImageSegueIdentifier, sender: indexPath)
+    }
     
     // method for setting the cell height dynamically
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
