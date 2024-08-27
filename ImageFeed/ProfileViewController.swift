@@ -7,26 +7,66 @@
 
 import UIKit
 
-class ProfileViewController: UIViewController {
+final class ProfileViewController: UIViewController {
     
-    @IBAction func exitButtonAction(_ sender: Any) { }
+    private lazy var profileImageView: UIImageView = {
+        let view = UIImageView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        guard let image = UIImage(named: "UserPic") else { return UIImageView() }
+        view.image = image
+        view.layer.cornerRadius = view.frame.size.width / 2
+        view.clipsToBounds = true
+        
+        return view
+    }()
+    
+    private lazy var nameLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "Екатерина Новикова"
+        label.font = UIFont.systemFont(ofSize: 23, weight: .bold)
+        guard let textColor = UIColor(named: "YP White") else { return UILabel() }
+        label.textColor = textColor
+        
+        return label
+    }()
+    
+    private lazy var usernameLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "@ekaterina_nov"
+        label.font = UIFont.systemFont(ofSize: 13, weight: .regular)
+        guard let textColor = UIColor(named: "YP Gray") else { return UILabel() }
+        label.textColor = textColor
+        
+        return label
+    }()
+    
+    private lazy var statusMessageLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "Hello, world."
+        label.font = UIFont.systemFont(ofSize: 13, weight: .regular)
+        guard let textColor = UIColor(named: "YP White") else { return UILabel() }
+        label.textColor = textColor
+        
+        return label
+    }()
+    
+    private lazy var exitButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        guard let buttonImage = UIImage(named: "ExitButton") else { return UIButton() }
+        button.setImage(buttonImage, for: .normal)
+        button.contentEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        
+        return button
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.view.backgroundColor = UIColor(named: "YP Black")
-        
-        let profileImageView = UIImageView()
-        let nameLabel = UILabel()
-        let usernameLabel = UILabel()
-        let statusMessageLabel = UILabel()
-        let exitButton = UIButton()
-        
-        profileImageView.translatesAutoresizingMaskIntoConstraints = false
-        nameLabel.translatesAutoresizingMaskIntoConstraints = false
-        usernameLabel.translatesAutoresizingMaskIntoConstraints = false
-        statusMessageLabel.translatesAutoresizingMaskIntoConstraints = false
-        exitButton.translatesAutoresizingMaskIntoConstraints = false
         
         self.view.addSubview(profileImageView)
         self.view.addSubview(nameLabel)
@@ -37,45 +77,29 @@ class ProfileViewController: UIViewController {
         setConstraints(for: profileImageView)
         
         setConstraints(for: nameLabel,
-                       text: "Екатерина Новикова",
                        previousView: profileImageView,
-                       fontSize: 23,
                        height: 18,
-                       fontWeight: .bold,
-                       textColor: UIColor(named: "YP White"),
                        leadingConstraint: 16,
                        topConstraint: 8)
         
         setConstraints(for: usernameLabel,
-                       text: "@ekaterina_nov",
                        previousView: nameLabel,
-                       fontSize: 13,
                        height: 18,
-                       fontWeight: .regular,
-                       textColor: UIColor(named: "YP Gray"),
                        leadingConstraint: 16,
                        topConstraint: 8)
         
         setConstraints(for: statusMessageLabel,
-                       text: "Hello, world.",
                        previousView: usernameLabel,
-                       fontSize: 13,
                        height: 18,
-                       fontWeight: .regular,
-                       textColor: UIColor(named: "YP White"),
                        leadingConstraint: 16,
                        topConstraint: 8)
         
         setConstraints(for: exitButton, relativeTo: profileImageView)
     }
     
+    @IBAction private func exitButtonAction(_ sender: Any) { }
+    
     private func setConstraints(for imageView: UIImageView) {
-        imageView.layer.cornerRadius = imageView.frame.size.width / 2
-        imageView.clipsToBounds = true
-        
-        let profileImage = UIImage(named: "UserPic")
-        imageView.image = profileImage
-        
         NSLayoutConstraint.activate([
             imageView.widthAnchor.constraint(equalToConstant: 70),
             imageView.heightAnchor.constraint(equalToConstant: 70),
@@ -85,19 +109,10 @@ class ProfileViewController: UIViewController {
     }
     
     private func setConstraints(for label: UILabel,
-                                text: String,
                                 previousView: UIView,
-                                fontSize: CGFloat,
                                 height: CGFloat,
-                                fontWeight: UIFont.Weight,
-                                textColor: UIColor?,
                                 leadingConstraint: CGFloat,
                                 topConstraint: CGFloat) {
-        label.text = text
-        label.font = UIFont.systemFont(ofSize: fontSize, weight: fontWeight)
-        guard let textColor else { return }
-        label.textColor = textColor
-        
         NSLayoutConstraint.activate([
             label.heightAnchor.constraint(equalToConstant: height),
             label.topAnchor.constraint(equalTo: previousView.bottomAnchor, constant: topConstraint),
@@ -106,9 +121,6 @@ class ProfileViewController: UIViewController {
     }
     
     private func setConstraints(for button: UIButton, relativeTo view: UIView) {
-        button.setImage(UIImage(named: "ExitButton"), for: .normal)
-        button.contentEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-        
         NSLayoutConstraint.activate([
             button.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             button.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -14)

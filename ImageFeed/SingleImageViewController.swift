@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SingleImageViewController: UIViewController {
+final class SingleImageViewController: UIViewController {
     var image: UIImage? {
         didSet {
             guard isViewLoaded, let image else { return }
@@ -17,10 +17,10 @@ class SingleImageViewController: UIViewController {
         }
     }
     
-    @IBOutlet weak var backButton: UIButton!
-    @IBOutlet weak var singleImageScrollView: UIScrollView!
+    @IBOutlet private weak var backButton: UIButton!
+    @IBOutlet private weak var singleImageScrollView: UIScrollView!
     @IBOutlet private var imageView: UIImageView!
-    @IBOutlet weak var shareButton: UIButton!
+    @IBOutlet private weak var shareButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,11 +56,11 @@ class SingleImageViewController: UIViewController {
         }
     }
  
-    @IBAction func didTapBackButton(_ sender: Any) {
+    @IBAction private func didTapBackButton(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func didTapShareButton(_ sender: Any) {
+    @IBAction private func didTapShareButton(_ sender: Any) {
         guard let image else { return }
         let shareView = UIActivityViewController(activityItems: [image], applicationActivities: nil)
         present(shareView, animated: true, completion: nil)
