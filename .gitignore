@@ -95,4 +95,8 @@ iOSInjectionProject/
 /*.gcno
 **/xcshareddata/WorkspaceSettings.xcsettings
 
+# Tokens
+Keys.swift
+ImageFeed/Keys.swift
+
 # End of https://www.toptal.com/developers/gitignore/api/swift,xcode
