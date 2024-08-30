@@ -33,6 +33,22 @@
             </objects>
             <point key="canvasLocation" x="-1786" y="65"/>
         </scene>
+        <!--Web View View Controller-->
+        <scene sceneID="UFJ-V7-erv">
+            <objects>
+                <viewController id="Bzo-zi-1Gv" customClass="WebViewViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="sge-qF-hBl">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="4Rh-Fe-sIB"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="o8F-I8-G8d"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="U9x-KE-253" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2827" y="-711"/>
+        </scene>
         <!--Auth View Controller-->
         <scene sceneID="qZ4-ov-bs5">
             <objects>
@@ -43,10 +59,13 @@
                         <viewLayoutGuide key="safeArea" id="CQz-wZ-SLZ"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
+                    <connections>
+                        <segue destination="Bzo-zi-1Gv" kind="presentation" identifier="ShowWebView" modalPresentationStyle="fullScreen" id="cLg-JF-zQ3"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dCz-PM-fhC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1787" y="-710"/>
+            <point key="canvasLocation" x="-3755" y="-711"/>
         </scene>
         <!--ImageList-->
         <scene sceneID="tne-QT-ifu">

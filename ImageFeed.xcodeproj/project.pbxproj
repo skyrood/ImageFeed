@@ -13,6 +13,8 @@
 		97E999572C7F99EB00627ECE /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E999562C7F99EA00627ECE /* Constants.swift */; };
 		97E9995B2C80761800627ECE /* Keys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E9995A2C80761800627ECE /* Keys.swift */; };
 		97E9995F2C807A8A00627ECE /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E9995E2C807A8A00627ECE /* AuthViewController.swift */; };
+		97E999622C80833100627ECE /* WebViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E999612C80833100627ECE /* WebViewViewController.swift */; };
+		97E999642C8214EC00627ECE /* WebViewViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E999632C8214EC00627ECE /* WebViewViewControllerDelegate.swift */; };
 		97F1AB312C64CD91000BFA47 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97F1AB302C64CD91000BFA47 /* AppDelegate.swift */; };
 		97F1AB332C64CD91000BFA47 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97F1AB322C64CD91000BFA47 /* SceneDelegate.swift */; };
 		97F1AB352C64CD91000BFA47 /* ImageListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97F1AB342C64CD91000BFA47 /* ImageListViewController.swift */; };
@@ -29,6 +31,8 @@
 		97E999562C7F99EA00627ECE /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		97E9995A2C80761800627ECE /* Keys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keys.swift; sourceTree = "<group>"; };
 		97E9995E2C807A8A00627ECE /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
+		97E999612C80833100627ECE /* WebViewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewViewController.swift; sourceTree = "<group>"; };
+		97E999632C8214EC00627ECE /* WebViewViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewViewControllerDelegate.swift; sourceTree = "<group>"; };
 		97F1AB2D2C64CD91000BFA47 /* ImageFeed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImageFeed.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		97F1AB302C64CD91000BFA47 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		97F1AB322C64CD91000BFA47 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -59,6 +63,16 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
+		97E999602C80831600627ECE /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				97E9995E2C807A8A00627ECE /* AuthViewController.swift */,
+				97E999612C80833100627ECE /* WebViewViewController.swift */,
+				97E999632C8214EC00627ECE /* WebViewViewControllerDelegate.swift */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
 		97F1AB242C64CD91000BFA47 = {
 			isa = PBXGroup;
 			children = (
@@ -78,6 +92,7 @@
 		97F1AB2F2C64CD91000BFA47 /* ImageFeed */ = {
 			isa = PBXGroup;
 			children = (
+				97E999602C80831600627ECE /* Auth */,
 				97B23FF32C6A779E0022C3F8 /* Helpers */,
 				97F1AB462C666510000BFA47 /* ImagesList */,
 				97F1AB302C64CD91000BFA47 /* AppDelegate.swift */,
@@ -90,7 +105,6 @@
 				97B23FF82C6E5F7B0022C3F8 /* SingleImageViewController.swift */,
 				97E999562C7F99EA00627ECE /* Constants.swift */,
 				97E9995A2C80761800627ECE /* Keys.swift */,
-				97E9995E2C807A8A00627ECE /* AuthViewController.swift */,
 			);
 			path = ImageFeed;
 			sourceTree = "<group>";
@@ -179,10 +193,12 @@
 				97B23FF52C6A77B50022C3F8 /* DateTimeFormatter.swift in Sources */,
 				97E9995F2C807A8A00627ECE /* AuthViewController.swift in Sources */,
 				97F1AB352C64CD91000BFA47 /* ImageListViewController.swift in Sources */,
+				97E999622C80833100627ECE /* WebViewViewController.swift in Sources */,
 				97B23FF92C6E5F7B0022C3F8 /* SingleImageViewController.swift in Sources */,
 				97F1AB452C6664F4000BFA47 /* ImageListCell.swift in Sources */,
 				97F1AB312C64CD91000BFA47 /* AppDelegate.swift in Sources */,
 				97F1AB332C64CD91000BFA47 /* SceneDelegate.swift in Sources */,
+				97E999642C8214EC00627ECE /* WebViewViewControllerDelegate.swift in Sources */,
 				97E9995B2C80761800627ECE /* Keys.swift in Sources */,
 				97E999572C7F99EB00627ECE /* Constants.swift in Sources */,
 			);

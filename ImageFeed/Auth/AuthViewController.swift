@@ -32,8 +32,12 @@ final class AuthViewController: UIViewController {
         
         button.backgroundColor = UIColor(named: "YP White") ?? UIColor.white
         
+        button.addTarget(self, action: #selector(signinButtonTapped), for: .touchUpInside)
+        
         return button
     }()
+    
+    private let ShowWebViewSegueIdentifier = "ShowWebView"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,6 +48,20 @@ final class AuthViewController: UIViewController {
         
         setConstraints(for: logoView)
         setConstraints(for: signinButton)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == ShowWebViewSegueIdentifier {
+            guard let webViewViewController = segue.destination as? WebViewViewController
+            else { fatalError("Failed to prepare for \(ShowWebViewSegueIdentifier)") }
+            webViewViewController.delegate = self
+        } else {
+            super.prepare(for: segue, sender: sender)
+        }
+    }
+    
+    @objc private func signinButtonTapped() {
+        performSegue(withIdentifier: ShowWebViewSegueIdentifier, sender: self)
     }
     
     private func setConstraints(for imageView: UIImageView) {
@@ -62,5 +80,15 @@ final class AuthViewController: UIViewController {
             button.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             button.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -90),
         ])
+    }
+}
+
+extension AuthViewController: WebViewViewControllerDelegate {
+    func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
+        //TODO: process code
+    }
+    
+    func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
+        dismiss(animated: true)
     }
 }
