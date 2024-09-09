@@ -69,9 +69,11 @@ final class OAuth2Service {
                                         
                     completion(.success(responseData))
                 } catch {
+                    print("Failed to decode data")
                     completion(.failure(error))
                 }
             case .failure(let error):
+                print("Failed to obtain access token")
                 completion(.failure(error))
             }
         }

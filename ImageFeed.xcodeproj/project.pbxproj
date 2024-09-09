@@ -94,6 +94,22 @@
 			path = SplashView;
 			sourceTree = "<group>";
 		};
+		97E999712C8F1A9700627ECE /* UserProfile */ = {
+			isa = PBXGroup;
+			children = (
+				97B23FF62C6B80410022C3F8 /* ProfileViewController.swift */,
+			);
+			path = UserProfile;
+			sourceTree = "<group>";
+		};
+		97E999722C8F1AB200627ECE /* SingleImage */ = {
+			isa = PBXGroup;
+			children = (
+				97B23FF82C6E5F7B0022C3F8 /* SingleImageViewController.swift */,
+			);
+			path = SingleImage;
+			sourceTree = "<group>";
+		};
 		97F1AB242C64CD91000BFA47 = {
 			isa = PBXGroup;
 			children = (
@@ -113,6 +129,8 @@
 		97F1AB2F2C64CD91000BFA47 /* ImageFeed */ = {
 			isa = PBXGroup;
 			children = (
+				97E999722C8F1AB200627ECE /* SingleImage */,
+				97E999712C8F1A9700627ECE /* UserProfile */,
 				97E9996E2C8F191A00627ECE /* SplashView */,
 				97E999652C8373D700627ECE /* Services */,
 				97E999602C80831600627ECE /* Auth */,
@@ -124,8 +142,6 @@
 				97F1AB392C64CD96000BFA47 /* Assets.xcassets */,
 				97F1AB3B2C64CD96000BFA47 /* LaunchScreen.storyboard */,
 				97F1AB3E2C64CD96000BFA47 /* Info.plist */,
-				97B23FF62C6B80410022C3F8 /* ProfileViewController.swift */,
-				97B23FF82C6E5F7B0022C3F8 /* SingleImageViewController.swift */,
 				97E999562C7F99EA00627ECE /* Constants.swift */,
 			);
 			path = ImageFeed;

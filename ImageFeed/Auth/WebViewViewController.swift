@@ -8,6 +8,11 @@
 import UIKit
 import WebKit
 
+protocol WebViewViewControllerDelegate: AnyObject {
+    func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String)
+    func webViewViewControllerDidCancel(_ vc: WebViewViewController)
+}
+
 final class WebViewViewController: UIViewController {
     
     weak var delegate: WebViewViewControllerDelegate?
@@ -159,7 +164,6 @@ extension WebViewViewController: WKNavigationDelegate {
             let items = urlComponents.queryItems,
             let codeItem = items.first(where: { $0.name == "code" })
         {
-            print(codeItem)
             return codeItem.value
         } else {
             return nil

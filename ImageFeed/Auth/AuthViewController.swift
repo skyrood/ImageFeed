@@ -7,12 +7,13 @@
 
 import UIKit
 
-protocol WebViewViewControllerDelegate: AnyObject {
-    func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String)
-    func webViewViewControllerDidCancel(_ vc: WebViewViewController)
+protocol AuthViewControllerDelegate: AnyObject {
+    func authViewController(_ vc: AuthViewController, didAuthenticateWith code: String)
 }
 
 final class AuthViewController: UIViewController {
+    
+    weak var delegate: AuthViewControllerDelegate?
     
     let oauth2Service = OAuth2Service.shared
     
@@ -93,17 +94,20 @@ final class AuthViewController: UIViewController {
 
 extension AuthViewController: WebViewViewControllerDelegate {
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
-        oauth2Service.fetchOAuthToken(code: code) { result in
-            switch result {
-            case .success( _ ):
-                print("access token stored successfully.")
-                
-                vc.dismiss(animated: true, completion: nil)
-                
-            case .failure(let error):
-                self.handleError(error)
-            }
-        }
+        
+        delegate?.authViewController(self, didAuthenticateWith: code)
+        
+//        oauth2Service.fetchOAuthToken(code: code) { result in
+//            switch result {
+//            case .success( _ ):
+//                print("access token stored successfully.")
+//                
+////                vc.dismiss(animated: true, completion: nil)
+//                
+//            case .failure(let error):
+//                self.handleError(error)
+//            }
+//        }
     }
     
     func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
