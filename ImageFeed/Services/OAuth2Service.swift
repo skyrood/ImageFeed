@@ -66,7 +66,6 @@ final class OAuth2Service {
                 do {
                     let responseData = try JSONDecoder().decode(OAuthTokenResponseBody.self, from: data)
                     self.tokenStorage.storeToken(responseData.accessToken)
-                                        
                     completion(.success(responseData))
                 } catch {
                     print("Failed to decode data")
