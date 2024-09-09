@@ -7,12 +7,19 @@
 
 import UIKit
 
+protocol WebViewViewControllerDelegate: AnyObject {
+    func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String)
+    func webViewViewControllerDidCancel(_ vc: WebViewViewController)
+}
+
 final class AuthViewController: UIViewController {
+    
+    let oauth2Service = OAuth2Service.shared
     
     private lazy var logoView: UIImageView = {
         let view = UIImageView()
         view.translatesAutoresizingMaskIntoConstraints = false
-
+        
         guard let image = UIImage(named: "unsplashLogo") else { return UIImageView() }
         view.image = image
         
@@ -52,8 +59,9 @@ final class AuthViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == ShowWebViewSegueIdentifier {
-            guard let webViewViewController = segue.destination as? WebViewViewController
-            else { fatalError("Failed to prepare for \(ShowWebViewSegueIdentifier)") }
+            guard let webViewViewController = segue.destination as? WebViewViewController else {
+                fatalError("Failed to prepare for \(ShowWebViewSegueIdentifier)")
+            }
             webViewViewController.delegate = self
         } else {
             super.prepare(for: segue, sender: sender)
@@ -85,10 +93,35 @@ final class AuthViewController: UIViewController {
 
 extension AuthViewController: WebViewViewControllerDelegate {
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
-        //TODO: process code
+        oauth2Service.fetchOAuthToken(code: code) { result in
+            switch result {
+            case .success( _ ):
+                print("access token stored successfully.")
+                
+                vc.dismiss(animated: true, completion: nil)
+                
+            case .failure(let error):
+                self.handleError(error)
+            }
+        }
     }
     
     func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
         dismiss(animated: true)
+    }
+    
+    private func handleError(_ error: Error) {
+        if let networkError = error as? NetworkError {
+            switch networkError {
+            case .httpStatusCode(let statusCode):
+                print("HTTP error occurred. Error code: \(statusCode)")
+            case .urlRequestError(let urlError):
+                print("URL request error: \(urlError)")
+            case .urlSessionError:
+                print("Session error")
+            }
+        } else {
+            print("Error occurred: \(error.localizedDescription)")
+        }
     }
 }

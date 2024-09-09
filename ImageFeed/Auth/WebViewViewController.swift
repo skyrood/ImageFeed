@@ -74,7 +74,7 @@ final class WebViewViewController: UIViewController {
     }
     
     @objc private func backButtonTapped() {
-        dismiss(animated: true, completion: nil)
+        delegate?.webViewViewControllerDidCancel(self)
     }
     
     private func setConstraints(for backButton: UIButton) {
@@ -108,7 +108,7 @@ final class WebViewViewController: UIViewController {
         }
         
         urlComponents.queryItems = [
-            URLQueryItem(name: "client_id", value: Keys.accessKey),
+            URLQueryItem(name: "client_id", value: Constants.accessKey),
             URLQueryItem(name: "redirect_uri", value: Constants.redirectURI),
             URLQueryItem(name: "response_type", value: "code"),
             URLQueryItem(name: "scope", value: Constants.accessScope),
@@ -135,13 +135,16 @@ final class WebViewViewController: UIViewController {
         progressBar.progress = Float(webView.estimatedProgress)
         progressBar.isHidden = fabs(webView.estimatedProgress - 1.0) <= 0.0001
     }
-    
 }
 
 extension WebViewViewController: WKNavigationDelegate {
-    internal func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+    func webView(_ webView: WKWebView, 
+                 decidePolicyFor navigationAction: WKNavigationAction,
+                 decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+                
         if let code = code(from: navigationAction) {
-            //TODO: process code
+            delegate?.webViewViewController(self, didAuthenticateWithCode: code)
+            
             decisionHandler(.cancel)
         } else {
             decisionHandler(.allow)
@@ -154,8 +157,9 @@ extension WebViewViewController: WKNavigationDelegate {
             let urlComponents = URLComponents(string: url.absoluteString),
             urlComponents.path == "/oauth/authorize/native",
             let items = urlComponents.queryItems,
-            let codeItem = items.first(where: { $0.name == "code" }) 
+            let codeItem = items.first(where: { $0.name == "code" })
         {
+            print(codeItem)
             return codeItem.value
         } else {
             return nil
