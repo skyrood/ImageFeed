@@ -100,19 +100,4 @@ extension AuthViewController: WebViewViewControllerDelegate {
     func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
         dismiss(animated: true)
     }
-    
-    private func handleError(_ error: Error) {
-        if let networkError = error as? NetworkError {
-            switch networkError {
-            case .httpStatusCode(let statusCode):
-                print("HTTP error occurred. Error code: \(statusCode)")
-            case .urlRequestError(let urlError):
-                print("URL request error: \(urlError)")
-            case .urlSessionError:
-                print("Session error")
-            }
-        } else {
-            print("Error occurred: \(error.localizedDescription)")
-        }
-    }
 }

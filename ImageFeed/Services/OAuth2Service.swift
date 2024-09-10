@@ -46,18 +46,14 @@ final class OAuth2Service {
             print("Failed to construct url")
             return nil
         }
-                
+        
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         
         return request
     }
     
-    private enum NetworkError: Error {
-        case codeError(Int)
-    }
-    
-    func fetchOAuthToken(code: String, completion: @escaping (Result<OAuthTokenResponseBody, Error>) -> Void) {
+    func fetchOAuthToken(code: String, completion: @escaping (Result<String, Error>) -> Void) {
         guard let request = makeOAuthTokenRequest(code: code) else { return }
         
         let task = URLSession.shared.data(for: request) { result in
@@ -65,14 +61,26 @@ final class OAuth2Service {
             case .success(let data):
                 do {
                     let responseData = try JSONDecoder().decode(OAuthTokenResponseBody.self, from: data)
-                    self.tokenStorage.storeToken(responseData.accessToken)
-                    completion(.success(responseData))
+                    let accessToken = responseData.accessToken
+                    self.tokenStorage.storeToken(accessToken)
+                    completion(.success(accessToken))
                 } catch {
-                    print("Failed to decode data")
+                    print("Failed to decode data. \nError occurred: \(error.localizedDescription)")
                     completion(.failure(error))
                 }
             case .failure(let error):
-                print("Failed to obtain access token")
+                if let networkError = error as? NetworkError {
+                    switch networkError {
+                    case .httpStatusCode(let statusCode):
+                        print("Received HTTP error with status code: \(statusCode)")
+                    case .urlRequestError(let requestError):
+                        print("URL Request error occurred: \(requestError.localizedDescription)")
+                    case .urlSessionError:
+                        print("An unknown URLSession error occurred.")
+                    }
+                } else {
+                    print("An unknown error occurred: \(error.localizedDescription)")
+                }
                 completion(.failure(error))
             }
         }
