@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		976D1A472C99DA6B00472ECC /* UIBlockingProgressHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976D1A462C99DA5A00472ECC /* UIBlockingProgressHUD.swift */; };
 		97B23FF52C6A77B50022C3F8 /* DateTimeFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B23FF42C6A77B50022C3F8 /* DateTimeFormatter.swift */; };
 		97B23FF72C6B80410022C3F8 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B23FF62C6B80410022C3F8 /* ProfileViewController.swift */; };
 		97B23FF92C6E5F7B0022C3F8 /* SingleImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B23FF82C6E5F7B0022C3F8 /* SingleImageViewController.swift */; };
@@ -28,6 +29,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		976D1A462C99DA5A00472ECC /* UIBlockingProgressHUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBlockingProgressHUD.swift; sourceTree = "<group>"; };
 		97B23FF42C6A77B50022C3F8 /* DateTimeFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateTimeFormatter.swift; sourceTree = "<group>"; };
 		97B23FF62C6B80410022C3F8 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		97B23FF82C6E5F7B0022C3F8 /* SingleImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleImageViewController.swift; sourceTree = "<group>"; };
@@ -64,6 +66,7 @@
 		97B23FF32C6A779E0022C3F8 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				976D1A462C99DA5A00472ECC /* UIBlockingProgressHUD.swift */,
 				97B23FF42C6A77B50022C3F8 /* DateTimeFormatter.swift */,
 				97E999682C861A1700627ECE /* URLSession+data.swift */,
 			);
@@ -243,6 +246,7 @@
 				97F1AB352C64CD91000BFA47 /* ImageListViewController.swift in Sources */,
 				97E999622C80833100627ECE /* WebViewViewController.swift in Sources */,
 				97B23FF92C6E5F7B0022C3F8 /* SingleImageViewController.swift in Sources */,
+				976D1A472C99DA6B00472ECC /* UIBlockingProgressHUD.swift in Sources */,
 				97F1AB452C6664F4000BFA47 /* ImageListCell.swift in Sources */,
 				97E999702C8F193600627ECE /* SplashViewController.swift in Sources */,
 				97F1AB312C64CD91000BFA47 /* AppDelegate.swift in Sources */,
