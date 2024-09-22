@@ -9,6 +9,10 @@ import UIKit
 
 final class ProfileViewController: UIViewController {
     
+    private let tokenStorage = OAuth2TokenStorage()
+    
+    let profileService = ProfileService.shared
+    
     private lazy var profileImageView: UIImageView = {
         let view = UIImageView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -95,6 +99,24 @@ final class ProfileViewController: UIViewController {
                        topConstraint: 8)
         
         setConstraints(for: exitButton, relativeTo: profileImageView)
+        
+        updateProfileDetails(with: profileService.profile)
+        
+//        guard let token = tokenStorage.token else { return }
+        
+//        profileService.fetchProfile(token) { [weak self] result in
+//            DispatchQueue.main.async {
+//                switch result {
+//                case .success(let profile):
+//                    self?.nameLabel.text = profile.name
+//                    self?.usernameLabel.text = profile.username
+//                    self?.statusMessageLabel.text = profile.bio
+//                   
+//                case .failure(let error):
+//                    print("Failed to fetch profile: \(error.localizedDescription)")
+//                }
+//            }
+//        }
     }
     
     @IBAction private func exitButtonAction(_ sender: Any) { }
@@ -125,5 +147,11 @@ final class ProfileViewController: UIViewController {
             button.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             button.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -14)
         ])
+    }
+    
+    private func updateProfileDetails(with profile: Profile?) {
+        nameLabel.text = profileService.profile?.name
+        usernameLabel.text = profileService.profile?.loginName
+        statusMessageLabel.text = profileService.profile?.bio
     }
 }
