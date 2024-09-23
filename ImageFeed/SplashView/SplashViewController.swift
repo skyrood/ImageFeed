@@ -16,6 +16,8 @@ final class SplashViewController: UIViewController {
     
     let profileService = ProfileService.shared
     
+    let profileImageService = ProfileImageService.shared
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
@@ -60,7 +62,6 @@ extension SplashViewController: AuthViewControllerDelegate {
         vc.dismiss(animated: true) { [weak self] in
             guard let self = self else { return }
             self.fetchOAuthToken(code)
-            
         }
                 
         guard let token = tokenStorage.token else {
@@ -88,7 +89,6 @@ extension SplashViewController: AuthViewControllerDelegate {
     }
     
     private func fetchProfile(_ token: String) {
-        print("feching profile")
         UIBlockingProgressHUD.show()
         
         profileService.fetchProfile(token) { [weak self] result in
@@ -97,6 +97,7 @@ extension SplashViewController: AuthViewControllerDelegate {
             
             switch result {
             case .success(let profile):
+                self.profileImageService.fetchProfileImageURL(username: profile.username, token: token) { _ in }
                 self.navigateToTabBarController()
             case .failure(let error):
                 print("Failed to obtain user profile. Error occurred: \(error.localizedDescription)")
