@@ -83,6 +83,7 @@ extension SplashViewController: AuthViewControllerDelegate {
             case .success:
                 self.navigateToTabBarController()
             case .failure:
+                showAlert()
                 break
             }
         }
@@ -104,5 +105,15 @@ extension SplashViewController: AuthViewControllerDelegate {
                 break
             }
         }
+    }
+    
+    private func showAlert() {
+        let alertController = UIAlertController(title: "Something went wrong",
+                                                message: "Failed to sign in. Please try again.",
+                                                preferredStyle: .alert)
+        let dismissAction = UIAlertAction(title: "Ok", style: .default)
+        alertController.addAction(dismissAction)
+        
+        self.present(alertController, animated: true, completion: nil)
     }
 }

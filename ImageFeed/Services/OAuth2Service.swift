@@ -78,33 +78,26 @@ final class OAuth2Service {
         
         lastCode = code
         
-        guard let request = makeOAuthTokenRequest(code: code) else {
+        guard let tokenRequest = makeOAuthTokenRequest(code: code) else {
             completion(.failure(AuthServiceError.invalidRequest))
             return
         }
         
-        let task = URLSession.shared.data(for: request) { [weak self] result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let data):
-                    do {
-                        let responseData = try JSONDecoder().decode(OAuthTokenResponseBody.self, from: data)
-                        let accessToken = responseData.accessToken
-                        self?.tokenStorage.storeToken(accessToken)
-                        completion(.success(accessToken))
-                    } catch {
-                        print("Failed to decode data. \nError occurred: \(error.localizedDescription)")
-                        completion(.failure(error))
-                    }
-                case .failure(let error):
-                    completion(.failure(error))
-                }
-                
-                self?.task = nil
-                self?.lastCode = nil
+        let task = URLSession.shared.objectTask(for: tokenRequest) { [weak self] (result: Result<OAuthTokenResponseBody, Error>) in
+            switch result {
+            case .success(let responseData):
+                let accessToken = responseData.accessToken
+                self?.tokenStorage.storeToken(accessToken)
+                completion(.success(accessToken))
+            case .failure(let error):
+                print("[OAuth2Service.fetchOAuthToken]: Network error: \(error.localizedDescription)")
+                completion(.failure(error))
             }
+            
+            self?.task = nil
+            self?.lastCode = nil
         }
-        
+
         self.task = task
         task.resume()
     }

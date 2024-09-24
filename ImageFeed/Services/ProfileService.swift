@@ -92,31 +92,19 @@ final class ProfileService {
             return
         }
         
-        let task = URLSession.shared.data(for: profileRequest) { result in
+        let task = URLSession.shared.objectTask(for: profileRequest) { [weak self] (result: Result<ProfileResult, Error>) in
             switch result {
-            case .success(let data):
-                do {
-                    let responseData = try JSONDecoder().decode(ProfileResult.self, from: data)
-                    
-                    self.profile = Profile(
-                        username: responseData.username,
-                        firstName: responseData.firstName,
-                        lastName: responseData.lastName,
-                        bio: responseData.bio ?? ""
-                    )
-                    
-                    guard let profile = self.profile else {
-                        completion(.failure(ProfileServiceError.decodingError))
-                        return
-                    }
-                                        
-                    completion(.success(profile))
-                } catch {
-                    print("Failed to decode data. \nError occurred: \(error.localizedDescription)")
-                    completion(.failure(error))
-                }
+            case .success(let responseData):
+                self?.profile = Profile(
+                    username: responseData.username,
+                    firstName: responseData.firstName,
+                    lastName: responseData.lastName,
+                    bio: responseData.bio ?? "")
+                
+                guard let profile = self?.profile else { return }
+                completion(.success(profile))
             case .failure(let error):
-                networkErrorLogger(error)
+                print("[ProfileService.fetchProfile]: Network error: \(error.localizedDescription)")
                 completion(.failure(error))
             }
         }

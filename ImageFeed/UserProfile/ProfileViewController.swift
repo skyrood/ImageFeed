@@ -13,6 +13,8 @@ final class ProfileViewController: UIViewController {
     
     let profileService = ProfileService.shared
     
+    private var profileImageServiceObserver: NSObjectProtocol?
+    
     private lazy var profileImageView: UIImageView = {
         let view = UIImageView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -70,6 +72,15 @@ final class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        profileImageServiceObserver = NotificationCenter.default.addObserver(forName: ProfileImageService.didChangeNotification,
+                                                                             object: nil,
+                                                                             queue: .main) { [weak self] _ in
+            guard let self = self else { return }
+            self.updateAvatar()
+        }
+        
+        updateAvatar()
+        
         self.view.backgroundColor = UIColor(named: "YP Black")
         
         self.view.addSubview(profileImageView)
@@ -101,22 +112,6 @@ final class ProfileViewController: UIViewController {
         setConstraints(for: exitButton, relativeTo: profileImageView)
         
         updateProfileDetails(with: profileService.profile)
-        
-//        guard let token = tokenStorage.token else { return }
-        
-//        profileService.fetchProfile(token) { [weak self] result in
-//            DispatchQueue.main.async {
-//                switch result {
-//                case .success(let profile):
-//                    self?.nameLabel.text = profile.name
-//                    self?.usernameLabel.text = profile.username
-//                    self?.statusMessageLabel.text = profile.bio
-//                   
-//                case .failure(let error):
-//                    print("Failed to fetch profile: \(error.localizedDescription)")
-//                }
-//            }
-//        }
     }
     
     @IBAction private func exitButtonAction(_ sender: Any) { }
@@ -153,5 +148,12 @@ final class ProfileViewController: UIViewController {
         nameLabel.text = profileService.profile?.name
         usernameLabel.text = profileService.profile?.loginName
         statusMessageLabel.text = profileService.profile?.bio
+    }
+    
+    private func updateAvatar() {
+        guard
+            let profileImageURL = ProfileImageService.shared.userPicURL,
+            let url = URL(string: profileImageURL)
+        else { return }
     }
 }

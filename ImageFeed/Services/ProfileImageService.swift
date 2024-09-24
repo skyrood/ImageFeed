@@ -28,6 +28,8 @@ final class ProfileImageService {
     
     private(set) var userPicURL: String?
     
+    static let didChangeNotification = Notification.Name(rawValue: "ProfileImageProviderDidChange")
+    
     func fetchProfileImageURL(username: String, token: String, _ completion: @escaping (Result<String, Error>) -> Void) {
         let baseUrl = "https://api.unsplash.com"
         let path = "/users/" + username
@@ -55,22 +57,23 @@ final class ProfileImageService {
             self.task?.cancel()
         }
         
-        let task = URLSession.shared.data(for: userPicURLRequest) { result in
+        let task = URLSession.shared.objectTask(for: userPicURLRequest) { [weak self] (result: Result<UserResult, Error>) in
             switch result {
-            case .success(let data):
-                do {
-                    let responseData = try JSONDecoder().decode(UserResult.self, from: data)
-                    
-                    self.userPicURL = responseData.profileImage.small
-                } catch {
-                    print("Failed to decode userPic URL. \nError occurred: \(error.localizedDescription)")
-                    completion(.failure(error))
-                }
+            case .success(let responseData):
+                self?.userPicURL = responseData.profileImage.small
+                
+                guard let userPicURL = self?.userPicURL else { return }
+                completion(.success(userPicURL))
+                
             case .failure(let error):
-                networkErrorLogger(error)
+                print("[ProfileImageService.fetchProfileImageURL]: Network error: \(error.localizedDescription)")
                 completion(.failure(error))
             }
         }
+        
+        NotificationCenter.default.post(name: ProfileImageService.didChangeNotification,
+                                        object: self,
+                                        userInfo: ["URL": self.userPicURL!])
         
         self.task = task
         task.resume()
