@@ -17,6 +17,8 @@ struct UserResult: Codable {
 
 struct image: Codable {
     let small: String
+    let medium: String
+    let large: String
 }
 
 final class ProfileImageService {
@@ -60,7 +62,7 @@ final class ProfileImageService {
         let task = URLSession.shared.objectTask(for: userPicURLRequest) { [weak self] (result: Result<UserResult, Error>) in
             switch result {
             case .success(let responseData):
-                self?.userPicURL = responseData.profileImage.small
+                self?.userPicURL = responseData.profileImage.large
                 
                 guard let userPicURL = self?.userPicURL else { return }
                 completion(.success(userPicURL))
@@ -73,7 +75,7 @@ final class ProfileImageService {
         
         NotificationCenter.default.post(name: ProfileImageService.didChangeNotification,
                                         object: self,
-                                        userInfo: ["URL": self.userPicURL!])
+                                        userInfo: ["URL": self.userPicURL])
         
         self.task = task
         task.resume()

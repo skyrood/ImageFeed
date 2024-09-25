@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class ProfileViewController: UIViewController {
     
@@ -18,9 +19,7 @@ final class ProfileViewController: UIViewController {
     private lazy var profileImageView: UIImageView = {
         let view = UIImageView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        guard let image = UIImage(named: "UserPic") else { return UIImageView() }
-        view.image = image
-        view.layer.cornerRadius = view.frame.size.width / 2
+        view.layer.cornerRadius = 35
         view.clipsToBounds = true
         
         return view
@@ -155,5 +154,7 @@ final class ProfileViewController: UIViewController {
             let profileImageURL = ProfileImageService.shared.userPicURL,
             let url = URL(string: profileImageURL)
         else { return }
+        
+        profileImageView.kf.setImage(with: url, placeholder: UIImage(named: "UserAvatarPlaceholder"))
     }
 }
