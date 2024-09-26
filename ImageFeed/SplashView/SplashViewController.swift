@@ -63,12 +63,6 @@ extension SplashViewController: AuthViewControllerDelegate {
             guard let self = self else { return }
             self.fetchOAuthToken(code)
         }
-                
-        guard let token = tokenStorage.token else {
-            return
-        }
-        
-        self.fetchProfile(token)
     }
     
     private func fetchOAuthToken(_ code: String) {
@@ -80,11 +74,11 @@ extension SplashViewController: AuthViewControllerDelegate {
             UIBlockingProgressHUD.dismiss()
             
             switch result {
-            case .success:
-                self.navigateToTabBarController()
+            case .success(let token):
+                self.fetchProfile(token)
             case .failure:
                 showAlert()
-                break
+                break // не знаю, нужен ли тут брейк или что-то еще
             }
         }
     }
@@ -101,7 +95,7 @@ extension SplashViewController: AuthViewControllerDelegate {
                 self.profileImageService.fetchProfileImageURL(username: profile.username, token: token) { _ in }
                 self.navigateToTabBarController()
             case .failure(let error):
-                print("Failed to obtain user profile. Error occurred: \(error.localizedDescription)")
+                print("[SplashViewController.fetchProfile]: Failed to obtain user profile. Error occurred: \(error.localizedDescription)")
                 break
             }
         }

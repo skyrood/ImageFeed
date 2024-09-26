@@ -104,7 +104,7 @@ final class ProfileService {
                 guard let profile = self?.profile else { return }
                 completion(.success(profile))
             case .failure(let error):
-                print("[ProfileService.fetchProfile]: Network error: \(error.localizedDescription)")
+                print("[ProfileService.fetchProfile]: Network error = \(error.localizedDescription)")
                 completion(.failure(error))
             }
         }

@@ -14,6 +14,8 @@ final class ProfileViewController: UIViewController {
     
     let profileService = ProfileService.shared
     
+    let profileImageService = ProfileImageService.shared
+    
     private var profileImageServiceObserver: NSObjectProtocol?
     
     private lazy var profileImageView: UIImageView = {
@@ -74,7 +76,9 @@ final class ProfileViewController: UIViewController {
         profileImageServiceObserver = NotificationCenter.default.addObserver(forName: ProfileImageService.didChangeNotification,
                                                                              object: nil,
                                                                              queue: .main) { [weak self] _ in
-            guard let self = self else { return }
+            guard let self = self else {
+                return
+            }
             self.updateAvatar()
         }
         
@@ -151,7 +155,7 @@ final class ProfileViewController: UIViewController {
     
     private func updateAvatar() {
         guard
-            let profileImageURL = ProfileImageService.shared.userPicURL,
+            let profileImageURL = profileImageService.userPicURL,
             let url = URL(string: profileImageURL)
         else { return }
         
