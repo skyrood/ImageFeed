@@ -23,6 +23,7 @@ final class ProfileViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.cornerRadius = 35
         view.clipsToBounds = true
+        view.image = UIImage(named: "UserAvatarPlaceholder")
         
         return view
     }()
@@ -30,7 +31,7 @@ final class ProfileViewController: UIViewController {
     private lazy var nameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Екатерина Новикова"
+        label.text = ""
         label.font = UIFont.systemFont(ofSize: 23, weight: .bold)
         guard let textColor = UIColor(named: "YP White") else { return UILabel() }
         label.textColor = textColor
@@ -41,7 +42,7 @@ final class ProfileViewController: UIViewController {
     private lazy var usernameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "@ekaterina_nov"
+        label.text = ""
         label.font = UIFont.systemFont(ofSize: 13, weight: .regular)
         guard let textColor = UIColor(named: "YP Gray") else { return UILabel() }
         label.textColor = textColor
@@ -52,7 +53,7 @@ final class ProfileViewController: UIViewController {
     private lazy var statusMessageLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Hello, world."
+        label.text = ""
         label.font = UIFont.systemFont(ofSize: 13, weight: .regular)
         guard let textColor = UIColor(named: "YP White") else { return UILabel() }
         label.textColor = textColor
