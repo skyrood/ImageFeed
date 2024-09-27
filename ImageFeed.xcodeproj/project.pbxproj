@@ -16,6 +16,7 @@
 		97B23FF52C6A77B50022C3F8 /* DateTimeFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B23FF42C6A77B50022C3F8 /* DateTimeFormatter.swift */; };
 		97B23FF72C6B80410022C3F8 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B23FF62C6B80410022C3F8 /* ProfileViewController.swift */; };
 		97B23FF92C6E5F7B0022C3F8 /* SingleImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B23FF82C6E5F7B0022C3F8 /* SingleImageViewController.swift */; };
+		97CE94F42CA6D9FD003DECB7 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97CE94F32CA6D9F6003DECB7 /* TabBarController.swift */; };
 		97DD645E2C92152900096D69 /* ProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 97DD645D2C92152900096D69 /* ProgressHUD */; };
 		97E999572C7F99EB00627ECE /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E999562C7F99EA00627ECE /* Constants.swift */; };
 		97E9995F2C807A8A00627ECE /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E9995E2C807A8A00627ECE /* AuthViewController.swift */; };
@@ -41,6 +42,7 @@
 		97B23FF42C6A77B50022C3F8 /* DateTimeFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateTimeFormatter.swift; sourceTree = "<group>"; };
 		97B23FF62C6B80410022C3F8 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		97B23FF82C6E5F7B0022C3F8 /* SingleImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleImageViewController.swift; sourceTree = "<group>"; };
+		97CE94F32CA6D9F6003DECB7 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		97E999562C7F99EA00627ECE /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		97E9995E2C807A8A00627ECE /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
 		97E999612C80833100627ECE /* WebViewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewViewController.swift; sourceTree = "<group>"; };
@@ -82,6 +84,14 @@
 				97E999682C861A1700627ECE /* URLSession+data.swift */,
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		97CE94F52CA6DA03003DECB7 /* TabBarView */ = {
+			isa = PBXGroup;
+			children = (
+				97CE94F32CA6D9F6003DECB7 /* TabBarController.swift */,
+			);
+			path = TabBarView;
 			sourceTree = "<group>";
 		};
 		97E999602C80831600627ECE /* Auth */ = {
@@ -147,6 +157,7 @@
 		97F1AB2F2C64CD91000BFA47 /* ImageFeed */ = {
 			isa = PBXGroup;
 			children = (
+				97CE94F52CA6DA03003DECB7 /* TabBarView */,
 				97E999722C8F1AB200627ECE /* SingleImage */,
 				97E999712C8F1A9700627ECE /* UserProfile */,
 				97E9996E2C8F191A00627ECE /* SplashView */,
@@ -265,6 +276,7 @@
 				97E999622C80833100627ECE /* WebViewViewController.swift in Sources */,
 				97B23FF92C6E5F7B0022C3F8 /* SingleImageViewController.swift in Sources */,
 				976D1A472C99DA6B00472ECC /* UIBlockingProgressHUD.swift in Sources */,
+				97CE94F42CA6D9FD003DECB7 /* TabBarController.swift in Sources */,
 				97F1AB452C6664F4000BFA47 /* ImageListCell.swift in Sources */,
 				97E999702C8F193600627ECE /* SplashViewController.swift in Sources */,
 				97F1AB312C64CD91000BFA47 /* AppDelegate.swift in Sources */,
