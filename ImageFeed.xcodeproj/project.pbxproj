@@ -94,13 +94,13 @@
 			path = TabBarView;
 			sourceTree = "<group>";
 		};
-		97E999602C80831600627ECE /* Auth */ = {
+		97E999602C80831600627ECE /* AuthView */ = {
 			isa = PBXGroup;
 			children = (
 				97E9995E2C807A8A00627ECE /* AuthViewController.swift */,
 				97E999612C80833100627ECE /* WebViewViewController.swift */,
 			);
-			path = Auth;
+			path = AuthView;
 			sourceTree = "<group>";
 		};
 		97E999652C8373D700627ECE /* Services */ = {
@@ -162,7 +162,7 @@
 				97E999712C8F1A9700627ECE /* UserProfile */,
 				97E9996E2C8F191A00627ECE /* SplashView */,
 				97E999652C8373D700627ECE /* Services */,
-				97E999602C80831600627ECE /* Auth */,
+				97E999602C80831600627ECE /* AuthView */,
 				97B23FF32C6A779E0022C3F8 /* Helpers */,
 				97F1AB462C666510000BFA47 /* ImagesList */,
 				97F1AB302C64CD91000BFA47 /* AppDelegate.swift */,

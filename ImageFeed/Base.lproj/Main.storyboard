@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23094" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="6dT-lX-8W5">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23094" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -48,7 +48,7 @@
         <!--Auth View Controller-->
         <scene sceneID="qZ4-ov-bs5">
             <objects>
-                <viewController id="xab-Cd-J2B" customClass="AuthViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="AuthViewController" id="xab-Cd-J2B" customClass="AuthViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="lFV-yd-QTg">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -62,37 +62,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dCz-PM-fhC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-3755" y="-711"/>
-        </scene>
-        <!--Splash View Controller-->
-        <scene sceneID="cWt-pu-8el">
-            <objects>
-                <viewController storyboardIdentifier="SplashScreenController" id="6dT-lX-8W5" customClass="SplashViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="cSj-YA-ygC">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="YP Logo" translatesAutoresizingMaskIntoConstraints="NO" id="kce-9y-tuS">
-                                <rect key="frame" x="159" y="387" width="75" height="78"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="78" id="hdB-eH-7pK"/>
-                                    <constraint firstAttribute="width" constant="75" id="rCb-oU-SK4"/>
-                                </constraints>
-                            </imageView>
-                        </subviews>
-                        <viewLayoutGuide key="safeArea" id="u6i-WC-vL9"/>
-                        <color key="backgroundColor" name="YP Black"/>
-                        <constraints>
-                            <constraint firstItem="kce-9y-tuS" firstAttribute="centerY" secondItem="cSj-YA-ygC" secondAttribute="centerY" id="J2a-uX-c0Z"/>
-                            <constraint firstItem="kce-9y-tuS" firstAttribute="centerX" secondItem="cSj-YA-ygC" secondAttribute="centerX" id="nOC-GT-XxZ"/>
-                        </constraints>
-                    </view>
-                    <connections>
-                        <segue destination="xab-Cd-J2B" kind="presentation" identifier="ShowAuthView" modalPresentationStyle="fullScreen" id="95d-66-7Rg"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="ahc-V2-uqA" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-5360" y="26"/>
         </scene>
         <!--ImageList-->
         <scene sceneID="tne-QT-ifu">
@@ -258,7 +227,6 @@
     <resources>
         <image name="0" width="1600" height="1059"/>
         <image name="ShareButton" width="51" height="51"/>
-        <image name="YP Logo" width="75" height="78"/>
         <image name="tab_editorial_active" width="20" height="22"/>
         <namedColor name="YP Black">
             <color red="0.10196078431372549" green="0.10588235294117647" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

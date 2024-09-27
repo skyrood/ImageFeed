@@ -18,14 +18,27 @@ final class SplashViewController: UIViewController {
     
     let profileImageService = ProfileImageService.shared
     
+    private lazy var logoImageView: UIImageView = {
+        let view = UIImageView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.clipsToBounds = true
+        view.image = UIImage(named: "YP Logo")
+        
+        return view
+    }()
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         if let token = tokenStorage.token {
             fetchProfile(token)
         } else {
-            performSegue(withIdentifier: ShowAuthViewSegueIdentifier, sender: nil)
+            navigateToAuthviewController()
         }
+        
+        self.view.backgroundColor = UIColor(named: "YP Black")
+        self.view.addSubview(logoImageView)
+        setConstraints(for: logoImageView)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -42,18 +55,20 @@ final class SplashViewController: UIViewController {
         let tabBarView = UIStoryboard(name: "Main", bundle: .main).instantiateViewController(withIdentifier: "TabBarViewController")
         window.rootViewController = tabBarView
     }
-}
-
-extension SplashViewController {
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == ShowAuthViewSegueIdentifier {
-            guard let authViewController = segue.destination as? AuthViewController else {
-                fatalError("Failed to prepare for \(ShowAuthViewSegueIdentifier)")
-            }
-            authViewController.delegate = self
-        } else {
-            super.prepare(for: segue, sender: sender)
-        }
+    
+    private func navigateToAuthviewController() {
+        let authViewController = AuthViewController()
+        authViewController.delegate = self
+        authViewController.modalPresentationStyle = .fullScreen
+        present(authViewController, animated: true, completion: nil)
+    }
+    
+    private func setConstraints(for logoImageView: UIImageView) {
+        NSLayoutConstraint.activate([
+            logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            logoImageView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            logoImageView.widthAnchor.constraint(equalToConstant: 75),
+        ])
     }
 }
 
