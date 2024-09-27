@@ -42,9 +42,7 @@ final class AuthViewController: UIViewController {
         
         return button
     }()
-    
-    private let ShowWebViewSegueIdentifier = "ShowWebView"
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -56,19 +54,8 @@ final class AuthViewController: UIViewController {
         setConstraints(for: signinButton)
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == ShowWebViewSegueIdentifier {
-            guard let webViewViewController = segue.destination as? WebViewViewController else {
-                fatalError("Failed to prepare for \(ShowWebViewSegueIdentifier)")
-            }
-            webViewViewController.delegate = self
-        } else {
-            super.prepare(for: segue, sender: sender)
-        }
-    }
-    
     @objc private func signinButtonTapped() {
-        performSegue(withIdentifier: ShowWebViewSegueIdentifier, sender: self)
+        navigateToWebView()
     }
     
     private func setConstraints(for imageView: UIImageView) {
@@ -87,6 +74,13 @@ final class AuthViewController: UIViewController {
             button.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             button.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -90),
         ])
+    }
+    
+    private func navigateToWebView() {
+        let vc = WebViewViewController()
+        vc.delegate = self
+        vc.modalPresentationStyle = .fullScreen
+        present(vc, animated: true)
     }
 }
 
