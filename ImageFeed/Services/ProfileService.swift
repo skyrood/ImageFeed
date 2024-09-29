@@ -10,7 +10,7 @@ import Foundation
 struct ProfileResult: Codable {
     let username: String
     let firstName: String
-    let lastName: String
+    let lastName: String?
     let bio: String?
     
     private enum CodingKeys: String, CodingKey {
@@ -98,7 +98,7 @@ final class ProfileService {
                 self?.profile = Profile(
                     username: responseData.username,
                     firstName: responseData.firstName,
-                    lastName: responseData.lastName,
+                    lastName: responseData.lastName ?? "",
                     bio: responseData.bio ?? "")
                 
                 guard let profile = self?.profile else { return }

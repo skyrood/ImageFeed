@@ -9,12 +9,13 @@ import UIKit
 
 protocol AuthViewControllerDelegate: AnyObject {
     func authViewController(_ vc: AuthViewController, didAuthenticateWith code: String)
+    func didAuthenticate(_ vc: AuthViewController, token: String)
 }
 
 final class AuthViewController: UIViewController {
     
     weak var delegate: AuthViewControllerDelegate?
-        
+    
     private lazy var logoView: UIImageView = {
         let view = UIImageView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -42,7 +43,7 @@ final class AuthViewController: UIViewController {
         
         return button
     }()
-        
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -55,6 +56,7 @@ final class AuthViewController: UIViewController {
     }
     
     @objc private func signinButtonTapped() {
+        print("button tapped")
         navigateToWebView()
     }
     
@@ -86,6 +88,7 @@ final class AuthViewController: UIViewController {
 
 extension AuthViewController: WebViewViewControllerDelegate {
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
+        vc.dismiss(animated: false)
         delegate?.authViewController(self, didAuthenticateWith: code)
     }
     

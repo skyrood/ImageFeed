@@ -29,7 +29,7 @@ final class SplashViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
+                
         if let token = tokenStorage.token {
             fetchProfile(token)
         } else {
@@ -74,23 +74,32 @@ final class SplashViewController: UIViewController {
 
 extension SplashViewController: AuthViewControllerDelegate {
     func authViewController(_ vc: AuthViewController, didAuthenticateWith code: String) {
-        vc.dismiss(animated: true) { [weak self] in
-            guard let self = self else { return }
-            self.fetchOAuthToken(code)
+        self.fetchOAuthToken(vc, code)
+    }
+    
+    func didAuthenticate(_ vc: AuthViewController, token: String) {
+        vc.dismiss(animated: false) { [weak self] in
+            guard let self else { return }
+            
+            print("authviewcontroller dismissed?")
+            
+            guard let token = self.tokenStorage.token else {
+                print("no token found.")
+                return
+            }
+            
+            fetchProfile(token)
         }
     }
     
-    private func fetchOAuthToken(_ code: String) {
-        UIBlockingProgressHUD.show()
-        
+    private func fetchOAuthToken(_ vc: AuthViewController, _ code: String) {
         oauth2Service.fetchOAuthToken(code: code) { [ weak self ] result in
             guard let self = self else { return }
             
-            UIBlockingProgressHUD.dismiss()
             
             switch result {
             case .success(let token):
-                self.fetchProfile(token)
+                didAuthenticate(vc, token: token)
             case .failure:
                 showAlert()
                 break // не знаю, нужен ли тут брейк или что-то еще
@@ -117,8 +126,8 @@ extension SplashViewController: AuthViewControllerDelegate {
     }
     
     private func showAlert() {
-        let alertController = UIAlertController(title: "Something went wrong",
-                                                message: "Failed to sign in. Please try again.",
+        let alertController = UIAlertController(title: "Что-то пошло не так(",
+                                                message: "Не удалось войти в систему",
                                                 preferredStyle: .alert)
         let dismissAction = UIAlertAction(title: "Ok", style: .default)
         alertController.addAction(dismissAction)

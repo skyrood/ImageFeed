@@ -82,14 +82,6 @@ final class WebViewViewController: UIViewController {
         loadAuthView()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-//        webView.addObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), options: .new, context: nil)
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-//        webView.removeObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), context: nil)
-    }
-    
     @objc private func backButtonTapped() {
         delegate?.webViewViewControllerDidCancel(self)
     }
