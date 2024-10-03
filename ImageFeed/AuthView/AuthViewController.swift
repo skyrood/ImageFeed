@@ -56,7 +56,6 @@ final class AuthViewController: UIViewController {
     }
     
     @objc private func signinButtonTapped() {
-        print("button tapped")
         navigateToWebView()
     }
     
@@ -88,7 +87,7 @@ final class AuthViewController: UIViewController {
 
 extension AuthViewController: WebViewViewControllerDelegate {
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
-        vc.dismiss(animated: false)
+        vc.dismiss(animated: true)
         delegate?.authViewController(self, didAuthenticateWith: code)
     }
     

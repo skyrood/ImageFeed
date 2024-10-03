@@ -18,6 +18,8 @@ final class SplashViewController: UIViewController {
     
     let profileImageService = ProfileImageService.shared
     
+    private var isAuthorizing: Bool = false
+    
     private lazy var logoImageView: UIImageView = {
         let view = UIImageView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -32,7 +34,8 @@ final class SplashViewController: UIViewController {
                 
         if let token = tokenStorage.token {
             fetchProfile(token)
-        } else {
+        } else if !isAuthorizing {
+            isAuthorizing = true
             navigateToAuthviewController()
         }
         
@@ -78,7 +81,7 @@ extension SplashViewController: AuthViewControllerDelegate {
     }
     
     func didAuthenticate(_ vc: AuthViewController, token: String) {
-        vc.dismiss(animated: false) { [weak self] in
+        vc.dismiss(animated: true) { [weak self] in
             guard let self else { return }
             
             print("authviewcontroller dismissed?")
@@ -96,13 +99,11 @@ extension SplashViewController: AuthViewControllerDelegate {
         oauth2Service.fetchOAuthToken(code: code) { [ weak self ] result in
             guard let self = self else { return }
             
-            
             switch result {
             case .success(let token):
                 didAuthenticate(vc, token: token)
             case .failure:
                 showAlert()
-                break // не знаю, нужен ли тут брейк или что-то еще
             }
         }
     }
@@ -111,7 +112,7 @@ extension SplashViewController: AuthViewControllerDelegate {
         UIBlockingProgressHUD.show()
         
         profileService.fetchProfile(token) { [weak self] result in
-            UIBlockingProgressHUD.dismiss()            
+            UIBlockingProgressHUD.dismiss()
             guard let self = self else { return }
             
             switch result {
@@ -132,6 +133,11 @@ extension SplashViewController: AuthViewControllerDelegate {
         let dismissAction = UIAlertAction(title: "Ok", style: .default)
         alertController.addAction(dismissAction)
         
-        self.present(alertController, animated: true, completion: nil)
+        if var topController = UIApplication.shared.windows.first?.rootViewController {
+            while let presentedViewController = topController.presentedViewController {
+                topController = presentedViewController
+            }
+            topController.present(alertController, animated: true, completion: nil)
+        }
     }
 }
