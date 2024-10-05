@@ -9,13 +9,12 @@ import UIKit
 
 protocol AuthViewControllerDelegate: AnyObject {
     func authViewController(_ vc: AuthViewController, didAuthenticateWith code: String)
+    func didAuthenticate(_ vc: AuthViewController, token: String)
 }
 
 final class AuthViewController: UIViewController {
     
     weak var delegate: AuthViewControllerDelegate?
-    
-    let oauth2Service = OAuth2Service.shared
     
     private lazy var logoView: UIImageView = {
         let view = UIImageView()
@@ -45,8 +44,6 @@ final class AuthViewController: UIViewController {
         return button
     }()
     
-    private let ShowWebViewSegueIdentifier = "ShowWebView"
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -58,19 +55,8 @@ final class AuthViewController: UIViewController {
         setConstraints(for: signinButton)
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == ShowWebViewSegueIdentifier {
-            guard let webViewViewController = segue.destination as? WebViewViewController else {
-                fatalError("Failed to prepare for \(ShowWebViewSegueIdentifier)")
-            }
-            webViewViewController.delegate = self
-        } else {
-            super.prepare(for: segue, sender: sender)
-        }
-    }
-    
     @objc private func signinButtonTapped() {
-        performSegue(withIdentifier: ShowWebViewSegueIdentifier, sender: self)
+        navigateToWebView()
     }
     
     private func setConstraints(for imageView: UIImageView) {
@@ -90,10 +76,18 @@ final class AuthViewController: UIViewController {
             button.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -90),
         ])
     }
+    
+    private func navigateToWebView() {
+        let vc = WebViewViewController()
+        vc.delegate = self
+        vc.modalPresentationStyle = .fullScreen
+        present(vc, animated: true)
+    }
 }
 
 extension AuthViewController: WebViewViewControllerDelegate {
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
+        vc.dismiss(animated: true)
         delegate?.authViewController(self, didAuthenticateWith: code)
     }
     
