@@ -6,15 +6,23 @@
 //
 
 import Foundation
+import SwiftKeychainWrapper
 
 final class OAuth2TokenStorage {
     private(set) var token: String? {
         get {
-            return UserDefaults.standard.string(forKey: "accessToken")
+            let token: String? = KeychainWrapper.standard.string(forKey: "accessToken")
+            guard let token else { return nil }
+            return token
         }
         
         set {
-            UserDefaults.standard.set(newValue, forKey: "accessToken")
+            guard let newValue else { return }
+            let isSuccess = KeychainWrapper.standard.set(newValue, forKey: "accessToken")
+            guard isSuccess else {
+                print("Failed at writing token to keychain")
+                return
+            }
         }
     }
     
@@ -23,7 +31,7 @@ final class OAuth2TokenStorage {
     }
     
     func clearToken() {
-        self.token = nil
+        KeychainWrapper.standard.remove(forKey: "accessToken")
     }
 }
 

@@ -6,16 +6,24 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class ProfileViewController: UIViewController {
+    
+    private let tokenStorage = OAuth2TokenStorage()
+    
+    let profileService = ProfileService.shared
+    
+    let profileImageService = ProfileImageService.shared
+    
+    private var profileImageServiceObserver: NSObjectProtocol?
     
     private lazy var profileImageView: UIImageView = {
         let view = UIImageView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        guard let image = UIImage(named: "UserPic") else { return UIImageView() }
-        view.image = image
-        view.layer.cornerRadius = view.frame.size.width / 2
+        view.layer.cornerRadius = 35
         view.clipsToBounds = true
+        view.image = UIImage(named: "UserAvatarPlaceholder")
         
         return view
     }()
@@ -23,7 +31,7 @@ final class ProfileViewController: UIViewController {
     private lazy var nameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Екатерина Новикова"
+        label.text = ""
         label.font = UIFont.systemFont(ofSize: 23, weight: .bold)
         guard let textColor = UIColor(named: "YP White") else { return UILabel() }
         label.textColor = textColor
@@ -34,7 +42,7 @@ final class ProfileViewController: UIViewController {
     private lazy var usernameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "@ekaterina_nov"
+        label.text = ""
         label.font = UIFont.systemFont(ofSize: 13, weight: .regular)
         guard let textColor = UIColor(named: "YP Gray") else { return UILabel() }
         label.textColor = textColor
@@ -45,7 +53,7 @@ final class ProfileViewController: UIViewController {
     private lazy var statusMessageLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Hello, world."
+        label.text = ""
         label.font = UIFont.systemFont(ofSize: 13, weight: .regular)
         guard let textColor = UIColor(named: "YP White") else { return UILabel() }
         label.textColor = textColor
@@ -65,6 +73,17 @@ final class ProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        profileImageServiceObserver = NotificationCenter.default.addObserver(forName: ProfileImageService.didChangeNotification,
+                                                                             object: nil,
+                                                                             queue: .main) { [weak self] _ in
+            guard let self = self else {
+                return
+            }
+            self.updateAvatar()
+        }
+        
+        updateAvatar()
         
         self.view.backgroundColor = UIColor(named: "YP Black")
         
@@ -95,6 +114,8 @@ final class ProfileViewController: UIViewController {
                        topConstraint: 8)
         
         setConstraints(for: exitButton, relativeTo: profileImageView)
+        
+        updateProfileDetails(with: profileService.profile)
     }
     
     @IBAction private func exitButtonAction(_ sender: Any) { }
@@ -125,5 +146,20 @@ final class ProfileViewController: UIViewController {
             button.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             button.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -14)
         ])
+    }
+    
+    private func updateProfileDetails(with profile: Profile?) {
+        nameLabel.text = profileService.profile?.name
+        usernameLabel.text = profileService.profile?.loginName
+        statusMessageLabel.text = profileService.profile?.bio
+    }
+    
+    private func updateAvatar() {
+        guard
+            let profileImageURL = profileImageService.userPicURL,
+            let url = URL(string: profileImageURL)
+        else { return }
+        
+        profileImageView.kf.setImage(with: url, placeholder: UIImage(named: "UserAvatarPlaceholder"))
     }
 }
