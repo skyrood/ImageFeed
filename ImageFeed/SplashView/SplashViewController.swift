@@ -77,31 +77,12 @@ final class SplashViewController: UIViewController {
 
 extension SplashViewController: AuthViewControllerDelegate {
     func authViewController(_ vc: AuthViewController, didAuthenticateWith code: String) {
-        self.fetchOAuthToken(vc, code)
-    }
-    
-    func didAuthenticate(_ vc: AuthViewController, token: String) {
-        vc.dismiss(animated: true) { [weak self] in
-            guard let self else { return }
-            
-            print("authviewcontroller dismissed?")
-            
-            guard let token = self.tokenStorage.token else {
-                print("no token found.")
-                return
-            }
-            
-            fetchProfile(token)
-        }
-    }
-    
-    private func fetchOAuthToken(_ vc: AuthViewController, _ code: String) {
         oauth2Service.fetchOAuthToken(code: code) { [ weak self ] result in
             guard let self = self else { return }
             
             switch result {
             case .success(let token):
-                didAuthenticate(vc, token: token)
+                vc.dismiss(animated: true)
             case .failure:
                 showAlert()
             }

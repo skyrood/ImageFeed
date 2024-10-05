@@ -53,32 +53,6 @@ final class ProfileService {
     private var task: URLSessionTask?
     
     private init() {}
-
-    private func makeProfileRequest(_ token: String) -> URLRequest? {
-        let baseUrl = "https://api.unsplash.com"
-        let path = "/me"
-        
-        let bearerToken = "Bearer " + token
-        
-        guard var urlComponents = URLComponents(string: baseUrl) else {
-            print("Invalid base url")
-            return nil
-        }
-        
-        urlComponents.path = path
-        
-        guard let url = urlComponents.url else {
-            print("Invalid url")
-            return nil
-        }
-        
-        var profileRequest = URLRequest(url: url)
-        
-        profileRequest.setValue(bearerToken, forHTTPHeaderField: "Authorization")
-        profileRequest.httpMethod = "GET"
-        
-        return profileRequest
-    }
     
     func fetchProfile(_ token: String, completion: @escaping (Result<Profile, Error>) -> Void) {
         assert(Thread.isMainThread)
@@ -87,7 +61,7 @@ final class ProfileService {
             task?.cancel()
         }
         
-        guard let profileRequest = makeProfileRequest(token) else {
+        guard let profileRequest = urlRequestConstructor(path: "/me", token) else {
             completion(.failure(ProfileServiceError.invalidRequest))
             return
         }

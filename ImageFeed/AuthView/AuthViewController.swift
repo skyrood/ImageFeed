@@ -9,7 +9,6 @@ import UIKit
 
 protocol AuthViewControllerDelegate: AnyObject {
     func authViewController(_ vc: AuthViewController, didAuthenticateWith code: String)
-    func didAuthenticate(_ vc: AuthViewController, token: String)
 }
 
 final class AuthViewController: UIViewController {
