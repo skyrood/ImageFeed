@@ -15,6 +15,16 @@ struct Photo {
     let thumbImageURL: String
     let largeImageURL: String
     let isLiked: Bool
+    
+    init(from result: PhotoResult) {
+        self.id = result.id
+        self.size = CGSize(width: result.width, height: result.height)
+        self.createdAt = result.createdAt.toDate()
+        self.welcomeDescription = result.description
+        self.thumbImageURL = result.urls.thumb
+        self.largeImageURL = result.urls.full
+        self.isLiked = result.isLiked
+    }
 }
 
 struct PhotoResult: Decodable {
@@ -65,7 +75,7 @@ final class ImageListService {
         
         let path = "/photos?per_page=\(imagesPerPage)&page=\(nextPage)"
         
-        guard let imageListRequest = urlRequestConstructor(path: path, token) else { return }
+        guard let imageListRequest = urlRequestConstructor(path: path, token: token) else { return }
         
         if self.task != nil {
             self.task?.cancel()
@@ -76,20 +86,12 @@ final class ImageListService {
             case .success(let responseData):
                 
                 for image in responseData {
-                    let photo = Photo(id: image.id,
-                                      size: CGSize(width: image.width, height: image.height),
-                                      createdAt: image.createdAt.toDate(),
-                                      welcomeDescription: image.description ?? "",
-                                      thumbImageURL: image.urls.thumb,
-                                      largeImageURL: image.urls.full,
-                                      isLiked: image.isLiked)
+                    let photo = Photo(from: image)
                     
                     self?.photos.append(photo)
                 }
                 
-                NotificationCenter.default.post(name: ImageListService.didChangeNotification,
-                                                object: self,
-                                                userInfo: ["URL": "omg.wtf"]) // TODO: decide what to pass here
+                NotificationCenter.default.post(name: ImageListService.didChangeNotification, object: self)
                 
                 guard
                     let photos = self?.photos,

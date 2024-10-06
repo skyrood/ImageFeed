@@ -7,7 +7,7 @@
 
 import Foundation
 
-func urlRequestConstructor(path: String, _ token: String) -> URLRequest? {
+func urlRequestConstructor(path: String, token: String, queryItems: [URLQueryItem] = []) -> URLRequest? {
     let baseUrl = Constants.defaultBaseURL
     let path = path
     let bearerToken = "Bearer " + token
@@ -18,6 +18,7 @@ func urlRequestConstructor(path: String, _ token: String) -> URLRequest? {
     }
     
     urlComponents.path = path
+    urlComponents.queryItems = queryItems
     
     guard let url = urlComponents.url else {
         print("Invalid url")
