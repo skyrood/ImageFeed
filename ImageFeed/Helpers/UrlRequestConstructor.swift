@@ -7,28 +7,31 @@
 
 import Foundation
 
-func urlRequestConstructor(path: String, token: String, queryItems: [URLQueryItem] = []) -> URLRequest? {
-    let baseUrl = Constants.defaultBaseURL
-    let path = path
-    let bearerToken = "Bearer " + token
-    
-    guard var urlComponents = URLComponents(string: baseUrl) else {
-        print("Error: invalid URL")
-        return nil
+final class UrlRequestConstructor {
+    static func createRequest(path: String, token: String, queryItems: [URLQueryItem] = []) -> URLRequest? {
+        let baseUrl = Constants.defaultBaseURL
+        let path = path
+        let bearerToken = "Bearer " + token
+        
+        guard var urlComponents = URLComponents(string: baseUrl) else {
+            print("Error: invalid URL")
+            return nil
+        }
+        
+        urlComponents.path = path
+        urlComponents.queryItems = queryItems
+        
+        guard let url = urlComponents.url else {
+            print("Invalid url")
+            return nil
+        }
+        
+        var urlRequest = URLRequest(url: url)
+        
+        urlRequest.setValue(bearerToken, forHTTPHeaderField: "Authorization")
+        urlRequest.httpMethod = "GET"
+        
+        return urlRequest
     }
-    
-    urlComponents.path = path
-    urlComponents.queryItems = queryItems
-    
-    guard let url = urlComponents.url else {
-        print("Invalid url")
-        return nil
-    }
-    
-    var urlRequest = URLRequest(url: url)
-    
-    urlRequest.setValue(bearerToken, forHTTPHeaderField: "Authorization")
-    urlRequest.httpMethod = "GET"
-    
-    return urlRequest
 }
+

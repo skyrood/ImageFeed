@@ -75,7 +75,7 @@ final class ImageListService {
         
         let path = "/photos?per_page=\(imagesPerPage)&page=\(nextPage)"
         
-        guard let imageListRequest = urlRequestConstructor(path: path, token: token) else { return }
+        guard let imageListRequest = UrlRequestConstructor.createRequest(path: path, token: token) else { return }
         
         if self.task != nil {
             self.task?.cancel()

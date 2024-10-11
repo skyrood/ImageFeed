@@ -32,7 +32,7 @@ final class ProfileImageService {
     
     func fetchProfileImageURL(username: String, token: String, _ completion: @escaping (Result<String, Error>) -> Void) {
                 
-        guard let userPicURLRequest = urlRequestConstructor(path: "/users/\(username)", token: token) else { return }
+        guard let userPicURLRequest = UrlRequestConstructor.createRequest(path: "/users/\(username)", token: token) else { return }
         
         if self.task != nil {
             self.task?.cancel()

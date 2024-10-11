@@ -61,7 +61,7 @@ final class ProfileService {
             task?.cancel()
         }
         
-        guard let profileRequest = urlRequestConstructor(path: "/me", token: token) else {
+        guard let profileRequest = UrlRequestConstructor.createRequest(path: "/me", token: token) else {
             completion(.failure(ProfileServiceError.invalidRequest))
             return
         }
