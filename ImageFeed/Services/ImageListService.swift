@@ -12,16 +12,16 @@ struct Photo {
     let size: CGSize
     let createdAt: Date?
     let welcomeDescription: String?
-    let thumbImageURL: String
+    let regularImageURL: String
     let largeImageURL: String
     let isLiked: Bool
     
     init(from result: PhotoResult) {
         self.id = result.id
         self.size = CGSize(width: result.width, height: result.height)
-        self.createdAt = result.createdAt.toDate()
-        self.welcomeDescription = result.description
-        self.thumbImageURL = result.urls.thumb
+        self.createdAt = result.createdAt?.toDate()
+        self.welcomeDescription = result.description ?? ""
+        self.regularImageURL = result.urls.regular
         self.largeImageURL = result.urls.full
         self.isLiked = result.isLiked
     }
@@ -31,8 +31,8 @@ struct PhotoResult: Decodable {
     let id: String
     let width: Int
     let height: Int
-    let createdAt: String
-    let description: String
+    let createdAt: String?
+    let description: String?
     let urls: UrlsResult
     let isLiked: Bool
     
@@ -66,16 +66,21 @@ final class ImageListService {
     
     private var lastLoadedPage: Int?
     
-    private var imagesPerPage = 2
+    private var imagesPerPage = 10
     
     static let didChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange")
     
     func fetchPhotosNextPage(_ token: String, _ completion: @escaping (Result<[Photo], Error>) -> Void) {
         let nextPage = (lastLoadedPage ?? 0) + 1
         
-        let path = "/photos?per_page=\(imagesPerPage)&page=\(nextPage)"
+        let path = "/photos"
         
-        guard let imageListRequest = UrlRequestConstructor.createRequest(path: path, token: token) else { return }
+        let queryItems = [
+            URLQueryItem(name: "page", value: String(nextPage)),
+            URLQueryItem(name: "per_page", value: String(imagesPerPage))
+        ]
+        
+        guard let imageListRequest = UrlRequestConstructor.createRequest(path: path, token: token, queryItems: queryItems) else { return }
         
         if self.task != nil {
             self.task?.cancel()
@@ -105,5 +110,9 @@ final class ImageListService {
                 completion(.failure(error))
             }
         }
+        lastLoadedPage = nextPage
+        
+        self.task = task
+        task.resume()
     }
 }

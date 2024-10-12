@@ -8,15 +8,15 @@
 import UIKit
 
 final class SingleImageViewController: UIViewController {
-    var image: UIImage? {
+    var image: Photo? {
         didSet {
             guard isViewLoaded, let image else { return }
-            imageView.image = image
+            imageView.kf.setImage(with: URL(string: image.largeImageURL))
             imageView.frame.size = image.size
             rescaleAndCenterImageInScrollView(image: image)
         }
     }
-    
+        
     @IBOutlet private weak var backButton: UIButton!
     @IBOutlet private weak var singleImageScrollView: UIScrollView!
     @IBOutlet private var imageView: UIImageView!
@@ -29,7 +29,7 @@ final class SingleImageViewController: UIViewController {
         singleImageScrollView.maximumZoomScale = 1.25
         
         guard let image else { return }
-        imageView.image = image
+        imageView.kf.setImage(with: URL(string: image.largeImageURL))
         imageView.frame.size = image.size
         rescaleAndCenterImageInScrollView(image: image)
         
@@ -70,7 +70,7 @@ final class SingleImageViewController: UIViewController {
         updateScrollViewInsets()
     }
     
-    private func rescaleAndCenterImageInScrollView(image: UIImage) {
+    private func rescaleAndCenterImageInScrollView(image: Photo) {
         let minZoomScale = singleImageScrollView.minimumZoomScale
         let maxZoomScale = singleImageScrollView.maximumZoomScale
         view.layoutIfNeeded()

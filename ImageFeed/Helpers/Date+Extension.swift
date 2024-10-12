@@ -16,7 +16,8 @@ private let isoFormatter: DateFormatter = {
 
 private let dateTimeDefaultFormatter: DateFormatter = {
     let dateFormatter = DateFormatter()
-    dateFormatter.dateFormat = "dd.MM.yyyy hh:mm"
+    dateFormatter.dateFormat = "dd MMMM yyyy"
+    dateFormatter.locale = Locale(identifier: "ru_RU")
     return dateFormatter
 }()
 
