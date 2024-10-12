@@ -8,13 +8,21 @@
 import Foundation
 
 final class UrlRequestConstructor {
-    static func createRequest(path: String, token: String, queryItems: [URLQueryItem] = []) -> URLRequest? {
+    
+    static func createRequest(path: String, queryItems: [URLQueryItem] = []) -> URLRequest? {
+        let tokenStorage = OAuth2TokenStorage()
+        
+        guard let token = tokenStorage.token else {
+            print("[UrlRequestConstructor:createRequest]: No token found.")
+            return nil
+        }
+        
         let baseUrl = Constants.defaultBaseURL
         let path = path
         let bearerToken = "Bearer " + token
         
         guard var urlComponents = URLComponents(string: baseUrl) else {
-            print("Error: invalid URL")
+            print("[UrlRequestConstructor:createRequest]: invalid URL")
             return nil
         }
         

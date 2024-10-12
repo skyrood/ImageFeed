@@ -13,9 +13,7 @@ final class ImageListViewController: UIViewController {
     @IBOutlet private var tableView: UITableView!
     
     private var imageListService = ImageListService.shared
-    
-    private let tokenStorage = OAuth2TokenStorage()
-        
+            
     private var photos: [Photo] = []
     
     private let showSingleImageSegueIdentifier = "ShowSingleImage"
@@ -106,12 +104,7 @@ extension ImageListViewController {
     }
     
     private func loadPhotos() {
-        guard let token = tokenStorage.token else {
-            print("ImageListViewController.loadPhotos]: Failed to fetch photos. Error occurred: No token found")
-            return
-        }
-        
-        imageListService.fetchPhotosNextPage(token) { [weak self] result in
+        imageListService.fetchPhotosNextPage() { [weak self] result in
             switch result {
             case .success:
                 self?.updateTableViewAnimated()

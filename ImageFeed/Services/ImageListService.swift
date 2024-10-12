@@ -70,7 +70,7 @@ final class ImageListService {
     
     static let didChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange")
     
-    func fetchPhotosNextPage(_ token: String, _ completion: @escaping (Result<[Photo], Error>) -> Void) {
+    func fetchPhotosNextPage( _ completion: @escaping (Result<[Photo], Error>) -> Void) {
         let nextPage = (lastLoadedPage ?? 0) + 1
         
         let path = "/photos"
@@ -80,8 +80,8 @@ final class ImageListService {
             URLQueryItem(name: "per_page", value: String(imagesPerPage))
         ]
         
-        guard let imageListRequest = UrlRequestConstructor.createRequest(path: path, token: token, queryItems: queryItems) else { return }
-        
+        guard let imageListRequest = UrlRequestConstructor.createRequest(path: path, queryItems: queryItems) else { return }
+                
         if self.task != nil {
             self.task?.cancel()
         }
@@ -114,5 +114,9 @@ final class ImageListService {
         
         self.task = task
         task.resume()
+    }
+    
+    func changeLike(_ token: String, photo id: String, isLike: Bool, completion: @escaping (Result<Void, Error>) -> Void) {
+        
     }
 }

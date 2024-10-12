@@ -30,9 +30,9 @@ final class ProfileImageService {
     
     static let didChangeNotification = Notification.Name(rawValue: "ProfileImageProviderDidChange")
     
-    func fetchProfileImageURL(username: String, token: String, _ completion: @escaping (Result<String, Error>) -> Void) {
+    func fetchProfileImageURL(username: String, _ completion: @escaping (Result<String, Error>) -> Void) {
                 
-        guard let userPicURLRequest = UrlRequestConstructor.createRequest(path: "/users/\(username)", token: token) else { return }
+        guard let userPicURLRequest = UrlRequestConstructor.createRequest(path: "/users/\(username)") else { return }
         
         if self.task != nil {
             self.task?.cancel()

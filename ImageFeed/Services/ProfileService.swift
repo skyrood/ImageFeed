@@ -54,14 +54,14 @@ final class ProfileService {
     
     private init() {}
     
-    func fetchProfile(_ token: String, completion: @escaping (Result<Profile, Error>) -> Void) {
+    func fetchProfile(completion: @escaping (Result<Profile, Error>) -> Void) {
         assert(Thread.isMainThread)
         
         if self.task != nil {
             self.task?.cancel()
         }
         
-        guard let profileRequest = UrlRequestConstructor.createRequest(path: "/me", token: token) else {
+        guard let profileRequest = UrlRequestConstructor.createRequest(path: "/me") else {
             completion(.failure(ProfileServiceError.invalidRequest))
             return
         }

@@ -6,12 +6,16 @@
 //
 
 import UIKit
+import ProgressHUD
 
 final class SingleImageViewController: UIViewController {
     var image: Photo? {
         didSet {
+            UIBlockingProgressHUD.show()
             guard isViewLoaded, let image else { return }
-            imageView.kf.setImage(with: URL(string: image.largeImageURL))
+            imageView.kf.setImage(with: URL(string: image.largeImageURL)) { _ in
+                UIBlockingProgressHUD.dismiss()
+            }
             imageView.frame.size = image.size
             rescaleAndCenterImageInScrollView(image: image)
         }
@@ -29,7 +33,9 @@ final class SingleImageViewController: UIViewController {
         singleImageScrollView.maximumZoomScale = 1.25
         
         guard let image else { return }
-        imageView.kf.setImage(with: URL(string: image.largeImageURL))
+        imageView.kf.setImage(with: URL(string: image.largeImageURL)) { _ in
+            UIBlockingProgressHUD.dismiss()
+        }
         imageView.frame.size = image.size
         rescaleAndCenterImageInScrollView(image: image)
         
