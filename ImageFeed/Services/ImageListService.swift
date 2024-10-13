@@ -139,4 +139,8 @@ final class ImageListService {
         self.task = task
         task.resume()
     }
+    
+    func cleanList() {
+        self.photos = []
+    }
 }

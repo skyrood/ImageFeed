@@ -7,9 +7,15 @@
 
 import UIKit
 
+protocol ImageListCellDelegate: AnyObject {
+    func didTapLikeButton(in cell: ImageListCell)
+}
+
 final class ImageListCell: UITableViewCell {
     // setting the cell reuse identifier
     static let reuseIdentifier = "ImageListCell"
+    
+    weak var delegate: ImageListCellDelegate?
     
     // outlets for cell elements
     @IBOutlet weak var imageContainer: UIImageView!
@@ -19,6 +25,6 @@ final class ImageListCell: UITableViewCell {
     var likeButtonAction: (() -> Void)?
     
     @IBAction func likeButtonTapped(_ sender: UIButton) {
-        likeButtonAction?()
+        delegate?.didTapLikeButton(in: self)
     }
 }

@@ -13,6 +13,7 @@ final class ProfileViewController: UIViewController {
     let profileService = ProfileService.shared
     
     let profileImageService = ProfileImageService.shared
+    let profileLogoutService = ProfileLogoutService.shared
     
     private var profileImageServiceObserver: NSObjectProtocol?
     
@@ -65,6 +66,7 @@ final class ProfileViewController: UIViewController {
         guard let buttonImage = UIImage(named: "ExitButton") else { return UIButton() }
         button.setImage(buttonImage, for: .normal)
         button.contentEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        button.addTarget(self, action: #selector(logout), for: .touchUpInside)
         
         return button
     }()
@@ -159,5 +161,14 @@ final class ProfileViewController: UIViewController {
         else { return }
         
         profileImageView.kf.setImage(with: url, placeholder: UIImage(named: "UserAvatarPlaceholder"))
+    }
+    
+    @objc private func logout() {
+        profileLogoutService.logout() { [weak self] in
+            print("logged out successfully")
+            let splashViewController = SplashViewController()
+            splashViewController.modalPresentationStyle = .fullScreen
+            self?.present(splashViewController, animated: true, completion: nil)
+        }
     }
 }

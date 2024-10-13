@@ -81,25 +81,15 @@ extension ImageListViewController: UITableViewDataSource {
 extension ImageListViewController {
     // method for filling custom cells
     func configCell(for cell: ImageListCell, with indexPath: IndexPath) {
-        var cellImage = imageListService.photos[indexPath.row]
-        cell.imageContainer.kf.setImage(with: URL(string: cellImage.regularImageURL))
+        let photo = imageListService.photos[indexPath.row]
         
-        cell.dateLabel.text = cellImage.createdAt?.dateTimeString
+        cell.delegate = self
         
-        updateLikeButtonImage(for: cell, with: !cellImage.isLiked)
-
-        cell.likeButtonAction = { [weak self] in
-            self?.imageListService.changeLike(photo: cellImage.id, isLike: cellImage.isLiked) { [weak self] result in
-                switch result {
-                case .success():
-                    guard let self else { return }
-                    cellImage.isLiked = !cellImage.isLiked
-                    self.updateLikeButtonImage(for: cell, with: !cellImage.isLiked)
-                case .failure(let error):
-                    print("[ImageListViewController.likeButtonTapped] Error occurred: \(error.localizedDescription)")
-                }
-            }
-        }
+        cell.imageContainer.kf.setImage(with: URL(string: photo.regularImageURL))
+        
+        cell.dateLabel.text = photo.createdAt?.dateTimeString
+        
+        updateLikeButtonImage(for: cell, with: photo.isLiked)
     }
     
     func updateTableViewAnimated() {
@@ -127,9 +117,32 @@ extension ImageListViewController {
             }
         }
     }
+}
+
+extension ImageListViewController: ImageListCellDelegate {
+    func didTapLikeButton(in cell: ImageListCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        let photo = photos[indexPath.row]
+        
+        UIBlockingProgressHUD.show()
+                
+        self.imageListService.changeLike(photo: photo.id, isLike: photo.isLiked) { [weak self] result in
+            switch result {
+            case .success():
+                guard let self else { return }
+                photos[indexPath.row].isLiked = !photo.isLiked
+                self.updateLikeButtonImage(for: cell, with: photos[indexPath.row].isLiked)
+                UIBlockingProgressHUD.dismiss()
+            case .failure(let error):
+                UIBlockingProgressHUD.dismiss()
+            }
+        }
+    }
     
     private func updateLikeButtonImage(for cell: ImageListCell, with status: Bool) {
-        cell.likeButton.setBackgroundImage(status ? UIImage(named: "LikeButtonOff") : UIImage(named: "LikeButtonOn"), for: .normal)
+        DispatchQueue.main.async {
+            cell.likeButton.setBackgroundImage(status ? UIImage(named: "LikeButtonOn") : UIImage(named: "LikeButtonOff"), for: .normal)
+        }
     }
 }
 
@@ -138,7 +151,7 @@ extension ImageListViewController: UITableViewDelegate {
         performSegue(withIdentifier: showSingleImageSegueIdentifier, sender: indexPath)
     }
     
-//     method for setting the cell height dynamically
+    //     method for setting the cell height dynamically
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let image = imageListService.photos[indexPath.row]
         

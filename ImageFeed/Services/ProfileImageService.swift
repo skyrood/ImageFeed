@@ -54,9 +54,13 @@ final class ProfileImageService {
         
         NotificationCenter.default.post(name: ProfileImageService.didChangeNotification,
                                         object: self,
-                                        userInfo: ["URL": self.userPicURL])
+                                        userInfo: [:])
         
         self.task = task
         task.resume()
+    }
+    
+    func cleanProfileImage() {
+        self.userPicURL = nil
     }
 }
