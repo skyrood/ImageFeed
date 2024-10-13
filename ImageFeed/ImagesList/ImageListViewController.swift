@@ -81,12 +81,25 @@ extension ImageListViewController: UITableViewDataSource {
 extension ImageListViewController {
     // method for filling custom cells
     func configCell(for cell: ImageListCell, with indexPath: IndexPath) {
-        let cellImage = imageListService.photos[indexPath.row]
+        var cellImage = imageListService.photos[indexPath.row]
         cell.imageContainer.kf.setImage(with: URL(string: cellImage.regularImageURL))
         
         cell.dateLabel.text = cellImage.createdAt?.dateTimeString
         
-        cell.likeButton.setBackgroundImage(cellImage.isLiked ? UIImage(named: "LikeButtonOn") : UIImage(named: "LikeButtonOff"), for: .normal)
+        updateLikeButtonImage(for: cell, with: !cellImage.isLiked)
+
+        cell.likeButtonAction = { [weak self] in
+            self?.imageListService.changeLike(photo: cellImage.id, isLike: cellImage.isLiked) { [weak self] result in
+                switch result {
+                case .success():
+                    guard let self else { return }
+                    cellImage.isLiked = !cellImage.isLiked
+                    self.updateLikeButtonImage(for: cell, with: !cellImage.isLiked)
+                case .failure(let error):
+                    print("[ImageListViewController.likeButtonTapped] Error occurred: \(error.localizedDescription)")
+                }
+            }
+        }
     }
     
     func updateTableViewAnimated() {
@@ -113,6 +126,10 @@ extension ImageListViewController {
                 break
             }
         }
+    }
+    
+    private func updateLikeButtonImage(for cell: ImageListCell, with status: Bool) {
+        cell.likeButton.setBackgroundImage(status ? UIImage(named: "LikeButtonOff") : UIImage(named: "LikeButtonOn"), for: .normal)
     }
 }
 

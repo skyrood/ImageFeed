@@ -14,7 +14,7 @@ struct Photo {
     let welcomeDescription: String?
     let regularImageURL: String
     let largeImageURL: String
-    let isLiked: Bool
+    var isLiked: Bool
     
     init(from result: PhotoResult) {
         self.id = result.id
@@ -116,7 +116,27 @@ final class ImageListService {
         task.resume()
     }
     
-    func changeLike(_ token: String, photo id: String, isLike: Bool, completion: @escaping (Result<Void, Error>) -> Void) {
+    func changeLike(photo id: String, isLike: Bool, completion: @escaping (Result<Void, Error>) -> Void) {
+        let path = "/photos/\(id)/like"
+        guard var changeLikeRequest = UrlRequestConstructor.createRequest(path: path) else { return }
+        changeLikeRequest.httpMethod = !isLike ? "POST" : "DELETE"
         
+        if self.task != nil {
+            self.task?.cancel()
+        }
+        
+        let task = URLSession.shared.data(for: changeLikeRequest) { (result: Result<Data, Error>) in
+            switch result {
+            case .success:
+                completion(.success(()))
+                
+            case .failure(let error):
+                print("[ImageListService.changeLike]: Network error: \(error.localizedDescription)")
+                completion(.failure(error))
+            }
+        }
+        
+        self.task = task
+        task.resume()
     }
 }

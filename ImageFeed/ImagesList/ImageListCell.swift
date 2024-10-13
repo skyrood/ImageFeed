@@ -15,4 +15,10 @@ final class ImageListCell: UITableViewCell {
     @IBOutlet weak var imageContainer: UIImageView!
     @IBOutlet weak var likeButton: UIButton!
     @IBOutlet weak var dateLabel: UILabel!
+    
+    var likeButtonAction: (() -> Void)?
+    
+    @IBAction func likeButtonTapped(_ sender: UIButton) {
+        likeButtonAction?()
+    }
 }
