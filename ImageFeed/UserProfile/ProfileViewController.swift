@@ -164,11 +164,25 @@ final class ProfileViewController: UIViewController {
     }
     
     @objc private func logout() {
-        profileLogoutService.logout() { [weak self] in
-            print("logged out successfully")
-            let splashViewController = SplashViewController()
-            splashViewController.modalPresentationStyle = .fullScreen
-            self?.present(splashViewController, animated: true, completion: nil)
+        showLogoutPromptAlert(vc: self)
+    }
+    
+    private func showLogoutPromptAlert(vc: UIViewController) {
+        let alert = UIAlertController(title: "Пока, пока!", message: "Уверены, что хотите выйти?", preferredStyle: .alert)
+        
+        let cancelAction = UIAlertAction(title: "Нет", style: .default, handler: nil)
+        let logoutAction = UIAlertAction(title: "Да", style: .cancel) { _ in
+            self.profileLogoutService.logout() { [weak self] in
+                print("logged out successfully")
+                let splashViewController = SplashViewController()
+                splashViewController.modalPresentationStyle = .fullScreen
+                self?.present(splashViewController, animated: true, completion: nil)
+            }
         }
+        
+        alert.addAction(logoutAction)
+        alert.addAction(cancelAction)
+        
+        vc.present(alert, animated: true, completion: nil)
     }
 }
