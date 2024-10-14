@@ -95,9 +95,7 @@ final class ImageListService {
                     
                     self?.photos.append(photo)
                 }
-                
-                NotificationCenter.default.post(name: ImageListService.didChangeNotification, object: self)
-                
+                                
                 guard
                     let photos = self?.photos,
                     !photos.isEmpty
@@ -110,6 +108,7 @@ final class ImageListService {
                 completion(.failure(error))
             }
         }
+        
         lastLoadedPage = nextPage
         
         self.task = task
