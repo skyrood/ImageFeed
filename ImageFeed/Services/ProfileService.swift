@@ -21,24 +21,6 @@ struct ProfileResult: Codable {
     }
 }
 
-struct Profile {
-    var username: String
-    var firstName: String
-    var lastName: String
-    
-    var name: String {
-        let fullName = "\(firstName) \(lastName)"
-        return fullName
-    }
-    
-    var loginName: String {
-        let loginName = "@\(username)"
-        return loginName
-    }
-    
-    var bio: String
-}
-
 enum ProfileServiceError: Error {
     case invalidRequest
     case decodingError
@@ -53,41 +35,15 @@ final class ProfileService {
     private var task: URLSessionTask?
     
     private init() {}
-
-    private func makeProfileRequest(_ token: String) -> URLRequest? {
-        let baseUrl = "https://api.unsplash.com"
-        let path = "/me"
-        
-        let bearerToken = "Bearer " + token
-        
-        guard var urlComponents = URLComponents(string: baseUrl) else {
-            print("Invalid base url")
-            return nil
-        }
-        
-        urlComponents.path = path
-        
-        guard let url = urlComponents.url else {
-            print("Invalid url")
-            return nil
-        }
-        
-        var profileRequest = URLRequest(url: url)
-        
-        profileRequest.setValue(bearerToken, forHTTPHeaderField: "Authorization")
-        profileRequest.httpMethod = "GET"
-        
-        return profileRequest
-    }
     
-    func fetchProfile(_ token: String, completion: @escaping (Result<Profile, Error>) -> Void) {
+    func fetchProfile(completion: @escaping (Result<Profile, Error>) -> Void) {
         assert(Thread.isMainThread)
         
-        if task != nil {
-            task?.cancel()
+        if self.task != nil {
+            self.task?.cancel()
         }
         
-        guard let profileRequest = makeProfileRequest(token) else {
+        guard let profileRequest = UrlRequestConstructor.createRequest(path: "/me") else {
             completion(.failure(ProfileServiceError.invalidRequest))
             return
         }
@@ -111,5 +67,9 @@ final class ProfileService {
         
         self.task = task
         task.resume()
+    }
+    
+    func cleanProfile() {
+        self.profile = nil
     }
 }

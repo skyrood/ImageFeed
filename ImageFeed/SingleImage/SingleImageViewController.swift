@@ -6,22 +6,34 @@
 //
 
 import UIKit
+import ProgressHUD
+import Kingfisher
 
 final class SingleImageViewController: UIViewController {
-    var image: UIImage? {
-        didSet {
-            guard isViewLoaded, let image else { return }
-            imageView.image = image
-            imageView.frame.size = image.size
-            rescaleAndCenterImageInScrollView(image: image)
-        }
-    }
     
+    // MARK: - IB Outlets
     @IBOutlet private weak var backButton: UIButton!
     @IBOutlet private weak var singleImageScrollView: UIScrollView!
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private weak var shareButton: UIButton!
-    
+
+    // MARK: - Private Properties
+    private var image: Photo? {
+        didSet {
+            UIBlockingProgressHUD.show()
+            
+            guard isViewLoaded, let image else { return }
+            
+            imageView.kf.setImage(with: URL(string: image.largeImageURL)) { _ in
+                UIBlockingProgressHUD.dismiss()
+            }
+            
+            imageView.frame.size = image.size
+            rescaleAndCenterImageInScrollView(image: image)
+        }
+    }
+
+    // MARK: - Overrides Methods
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -29,7 +41,10 @@ final class SingleImageViewController: UIViewController {
         singleImageScrollView.maximumZoomScale = 1.25
         
         guard let image else { return }
-        imageView.image = image
+        imageView.kf.setImage(with: URL(string: image.largeImageURL)) { _ in
+            UIBlockingProgressHUD.dismiss()
+        }
+        
         imageView.frame.size = image.size
         rescaleAndCenterImageInScrollView(image: image)
         
@@ -42,7 +57,7 @@ final class SingleImageViewController: UIViewController {
             backButton.heightAnchor.constraint(equalToConstant: 44),
             backButton.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: -1),
             backButton.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 1)
-        ]) // хоть и задал размеры кнопки 44*44, но пришлось добавить leading constraint == -1 чтобы попасть в макет
+        ])
         
         if #available(iOS 15.0, *) {
             var imageConfig = UIButton.Configuration.plain()
@@ -55,7 +70,8 @@ final class SingleImageViewController: UIViewController {
             backButton.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         }
     }
- 
+
+    // MARK: - IB Actions
     @IBAction private func didTapBackButton(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
@@ -65,12 +81,18 @@ final class SingleImageViewController: UIViewController {
         let shareView = UIActivityViewController(activityItems: [image], applicationActivities: nil)
         present(shareView, animated: true, completion: nil)
     }
-    
+
+    // MARK: - Public Methods
     func scrollViewDidZoom(_ scrollView: UIScrollView) {
         updateScrollViewInsets()
     }
     
-    private func rescaleAndCenterImageInScrollView(image: UIImage) {
+    func setImage(with photo: Photo) {
+        self.image = photo
+    }
+
+    // MARK: - Private Methods
+    private func rescaleAndCenterImageInScrollView(image: Photo) {
         let minZoomScale = singleImageScrollView.minimumZoomScale
         let maxZoomScale = singleImageScrollView.maximumZoomScale
         view.layoutIfNeeded()
@@ -85,7 +107,6 @@ final class SingleImageViewController: UIViewController {
         let x = (newContentSize.width - visibleRectSize.width) / 2
         let y = (newContentSize.height - visibleRectSize.height) / 2
         singleImageScrollView.setContentOffset(CGPoint(x: x, y: y), animated: false)
-        
     }
     
     private func updateScrollViewInsets() {
@@ -98,6 +119,7 @@ final class SingleImageViewController: UIViewController {
     }
 }
 
+// MARK: - UIScrollViewDelegate
 extension SingleImageViewController: UIScrollViewDelegate {
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         imageView

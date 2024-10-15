@@ -8,6 +8,8 @@
 import UIKit
 
 final class TabBarController: UITabBarController {
+    
+// MARK: - Override methods
     override func awakeFromNib() {
         super.awakeFromNib()
         

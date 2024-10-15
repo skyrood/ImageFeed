@@ -9,14 +9,17 @@ import UIKit
 import ProgressHUD
 
 final class SplashViewController: UIViewController {
+
+    // MARK: - Public Properties
+    let profileService = ProfileService.shared
+    
+    let profileImageService = ProfileImageService.shared
+
+    // MARK: - Private Properties
     private let ShowAuthViewSegueIdentifier = "ShowAuthView"
     
     private let oauth2Service = OAuth2Service.shared
     private let tokenStorage = OAuth2TokenStorage()
-    
-    let profileService = ProfileService.shared
-    
-    let profileImageService = ProfileImageService.shared
     
     private var isAuthorizing: Bool = false
     
@@ -28,12 +31,13 @@ final class SplashViewController: UIViewController {
         
         return view
     }()
-    
+
+    // MARK: - Overrides Methods
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
                 
-        if let token = tokenStorage.token {
-            fetchProfile(token)
+        if tokenStorage.token != nil {
+            fetchProfile()
         } else if !isAuthorizing {
             isAuthorizing = true
             navigateToAuthviewController()
@@ -52,7 +56,8 @@ final class SplashViewController: UIViewController {
     override var preferredStatusBarStyle: UIStatusBarStyle {
         .lightContent
     }
-    
+
+    // MARK: - Private Methods
     private func navigateToTabBarController() {
         guard let window = UIApplication.shared.windows.first else { fatalError("Invalid configuration") }
         let tabBarView = UIStoryboard(name: "Main", bundle: .main).instantiateViewController(withIdentifier: "TabBarViewController")
@@ -75,49 +80,31 @@ final class SplashViewController: UIViewController {
     }
 }
 
+// MARK: - AuthViewControllerDelegate
 extension SplashViewController: AuthViewControllerDelegate {
     func authViewController(_ vc: AuthViewController, didAuthenticateWith code: String) {
-        self.fetchOAuthToken(vc, code)
-    }
-    
-    func didAuthenticate(_ vc: AuthViewController, token: String) {
-        vc.dismiss(animated: true) { [weak self] in
-            guard let self else { return }
-            
-            print("authviewcontroller dismissed?")
-            
-            guard let token = self.tokenStorage.token else {
-                print("no token found.")
-                return
-            }
-            
-            fetchProfile(token)
-        }
-    }
-    
-    private func fetchOAuthToken(_ vc: AuthViewController, _ code: String) {
         oauth2Service.fetchOAuthToken(code: code) { [ weak self ] result in
             guard let self = self else { return }
             
             switch result {
-            case .success(let token):
-                didAuthenticate(vc, token: token)
+            case .success(_):
+                vc.dismiss(animated: true)
             case .failure:
                 showAlert()
             }
         }
     }
     
-    private func fetchProfile(_ token: String) {
+    private func fetchProfile() {
         UIBlockingProgressHUD.show()
         
-        profileService.fetchProfile(token) { [weak self] result in
+        profileService.fetchProfile() { [weak self] result in
             UIBlockingProgressHUD.dismiss()
             guard let self = self else { return }
             
             switch result {
             case .success(let profile):
-                self.profileImageService.fetchProfileImageURL(username: profile.username, token: token) { _ in }
+                self.profileImageService.fetchProfileImageURL(username: profile.username) { _ in }
                 self.navigateToTabBarController()
             case .failure(let error):
                 print("[SplashViewController.fetchProfile]: Failed to obtain user profile. Error occurred: \(error.localizedDescription)")
@@ -137,6 +124,7 @@ extension SplashViewController: AuthViewControllerDelegate {
             while let presentedViewController = topController.presentedViewController {
                 topController = presentedViewController
             }
+            
             topController.present(alertController, animated: true, completion: nil)
         }
     }

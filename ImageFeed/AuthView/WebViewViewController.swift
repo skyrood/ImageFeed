@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import WebKit
+@preconcurrency import WebKit
 
 protocol WebViewViewControllerDelegate: AnyObject {
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String)
@@ -15,13 +15,15 @@ protocol WebViewViewControllerDelegate: AnyObject {
 
 final class WebViewViewController: UIViewController {
     
+    // MARK: - Public Properties
     weak var delegate: WebViewViewControllerDelegate?
-    
-    private var estimatedProgressObservation: NSKeyValueObservation?
     
     enum WebViewConstants {
         static let unsplashAuthorizeURLString = "https://unsplash.com/oauth/authorize"
     }
+
+    // MARK: - Private Properties
+    private var estimatedProgressObservation: NSKeyValueObservation?
     
     private lazy var progressBar: UIProgressView = {
         let progressBar = UIProgressView()
@@ -53,7 +55,8 @@ final class WebViewViewController: UIViewController {
         
         return view
     }()
-    
+
+    // MARK: - Overrides Methods
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -81,7 +84,8 @@ final class WebViewViewController: UIViewController {
         
         loadAuthView()
     }
-    
+
+    // MARK: - Private Methods
     @objc private func backButtonTapped() {
         delegate?.webViewViewControllerDidCancel(self)
     }
@@ -138,6 +142,7 @@ final class WebViewViewController: UIViewController {
     }
 }
 
+// MARK: - WKNavigationDelegate
 extension WebViewViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, 
                  decidePolicyFor navigationAction: WKNavigationAction,

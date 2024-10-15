@@ -97,6 +97,9 @@
                                                     <state key="normal">
                                                         <color key="titleColor" name="YP White (Alpha 50)"/>
                                                     </state>
+                                                    <connections>
+                                                        <action selector="likeButtonTapped:" destination="x38-XI-VVG" eventType="touchUpInside" id="YYF-lg-OaY"/>
+                                                    </connections>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e8q-Yx-Asp">
                                                     <rect key="frame" x="28" y="426" width="329" height="30"/>

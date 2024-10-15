@@ -30,28 +30,9 @@ final class ProfileImageService {
     
     static let didChangeNotification = Notification.Name(rawValue: "ProfileImageProviderDidChange")
     
-    func fetchProfileImageURL(username: String, token: String, _ completion: @escaping (Result<String, Error>) -> Void) {
-        let baseUrl = "https://api.unsplash.com"
-        let path = "/users/" + username
-        
-        let bearerToken = "Bearer " + token
-        
-        guard var urlComponents = URLComponents(string: baseUrl) else {
-            print("Invalid base url")
-            return
-        }
-        
-        urlComponents.path = path
-        
-        guard let url = urlComponents.url else {
-            print("Invalid url")
-            return
-        }
-
-        var userPicURLRequest = URLRequest(url: url)
-        
-        userPicURLRequest.setValue(bearerToken, forHTTPHeaderField: "Authorization")
-        userPicURLRequest.httpMethod = "GET"
+    func fetchProfileImageURL(username: String, _ completion: @escaping (Result<String, Error>) -> Void) {
+                
+        guard let userPicURLRequest = UrlRequestConstructor.createRequest(path: "/users/\(username)") else { return }
         
         if self.task != nil {
             self.task?.cancel()
@@ -73,9 +54,13 @@ final class ProfileImageService {
         
         NotificationCenter.default.post(name: ProfileImageService.didChangeNotification,
                                         object: self,
-                                        userInfo: ["URL": self.userPicURL])
+                                        userInfo: [:])
         
         self.task = task
         task.resume()
+    }
+    
+    func cleanProfileImage() {
+        self.userPicURL = nil
     }
 }

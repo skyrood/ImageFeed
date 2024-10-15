@@ -9,13 +9,14 @@ import UIKit
 import Kingfisher
 
 final class ProfileViewController: UIViewController {
-    
-    private let tokenStorage = OAuth2TokenStorage()
-    
+
+    // MARK: - Public Properties
     let profileService = ProfileService.shared
     
     let profileImageService = ProfileImageService.shared
-    
+    let profileLogoutService = ProfileLogoutService.shared
+
+    // MARK: - Private Properties
     private var profileImageServiceObserver: NSObjectProtocol?
     
     private lazy var profileImageView: UIImageView = {
@@ -67,10 +68,12 @@ final class ProfileViewController: UIViewController {
         guard let buttonImage = UIImage(named: "ExitButton") else { return UIButton() }
         button.setImage(buttonImage, for: .normal)
         button.contentEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        button.addTarget(self, action: #selector(logout), for: .touchUpInside)
         
         return button
     }()
-    
+
+    // MARK: - Overrides Methods
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -80,6 +83,7 @@ final class ProfileViewController: UIViewController {
             guard let self = self else {
                 return
             }
+            
             self.updateAvatar()
         }
         
@@ -117,9 +121,11 @@ final class ProfileViewController: UIViewController {
         
         updateProfileDetails(with: profileService.profile)
     }
-    
+
+    // MARK: - IB Actions
     @IBAction private func exitButtonAction(_ sender: Any) { }
-    
+
+    // MARK: - Private Methods
     private func setConstraints(for imageView: UIImageView) {
         NSLayoutConstraint.activate([
             imageView.widthAnchor.constraint(equalToConstant: 70),
@@ -161,5 +167,28 @@ final class ProfileViewController: UIViewController {
         else { return }
         
         profileImageView.kf.setImage(with: url, placeholder: UIImage(named: "UserAvatarPlaceholder"))
+    }
+    
+    @objc private func logout() {
+        showLogoutPromptAlert(vc: self)
+    }
+    
+    private func showLogoutPromptAlert(vc: UIViewController) {
+        let alert = UIAlertController(title: "Пока, пока!", message: "Уверены, что хотите выйти?", preferredStyle: .alert)
+        
+        let cancelAction = UIAlertAction(title: "Нет", style: .default, handler: nil)
+        let logoutAction = UIAlertAction(title: "Да", style: .cancel) { [weak self] _ in
+            self?.profileLogoutService.logout() { [weak self] in
+                print("logged out successfully")
+                let splashViewController = SplashViewController()
+                splashViewController.modalPresentationStyle = .fullScreen
+                self?.present(splashViewController, animated: true, completion: nil)
+            }
+        }
+        
+        alert.addAction(logoutAction)
+        alert.addAction(cancelAction)
+        
+        vc.present(alert, animated: true, completion: nil)
     }
 }

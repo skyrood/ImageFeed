@@ -30,7 +30,7 @@ final class OAuth2TokenStorage {
         self.token = newToken
     }
     
-    func clearToken() {
+    static func clearToken() {
         KeychainWrapper.standard.remove(forKey: "accessToken")
     }
 }
