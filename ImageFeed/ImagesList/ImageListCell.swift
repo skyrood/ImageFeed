@@ -12,19 +12,39 @@ protocol ImageListCellDelegate: AnyObject {
 }
 
 final class ImageListCell: UITableViewCell {
-    // setting the cell reuse identifier
+    
+    // MARK: - IB Outlets
+    @IBOutlet private weak var imageContainer: UIImageView!
+    @IBOutlet private weak var likeButton: UIButton!
+    @IBOutlet private weak var dateLabel: UILabel!
+
+    // MARK: - Public Properties
     static let reuseIdentifier = "ImageListCell"
-    
-    weak var delegate: ImageListCellDelegate?
-    
-    // outlets for cell elements
-    @IBOutlet weak var imageContainer: UIImageView!
-    @IBOutlet weak var likeButton: UIButton!
-    @IBOutlet weak var dateLabel: UILabel!
-    
     var likeButtonAction: (() -> Void)?
-    
-    @IBAction func likeButtonTapped(_ sender: UIButton) {
+
+    // MARK: - Private Properties
+    private weak var delegate: ImageListCellDelegate?
+
+    // MARK: - IB Actions
+    @IBAction private func likeButtonTapped(_ sender: UIButton) {
         delegate?.didTapLikeButton(in: self)
+    }
+
+    // MARK: - Public Methods
+    func configure(with photo: Photo, delegate: ImageListCellDelegate) {
+        self.imageContainer.layer.cornerRadius = 16
+        self.imageContainer.layer.masksToBounds = true
+        
+        self.delegate = delegate
+        
+        self.imageContainer.kf.setImage(with: URL(string: photo.regularImageURL))
+        
+        self.dateLabel.text = photo.createdAt?.dateTimeString
+    }
+    
+    func updateLikeButtonImage(with status: Bool) {
+        DispatchQueue.main.async {
+            self.likeButton.setBackgroundImage(status ? UIImage(named: "LikeButtonOn") : UIImage(named: "LikeButtonOff"), for: .normal)
+        }
     }
 }

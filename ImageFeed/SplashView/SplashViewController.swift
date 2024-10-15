@@ -9,14 +9,17 @@ import UIKit
 import ProgressHUD
 
 final class SplashViewController: UIViewController {
+
+    // MARK: - Public Properties
+    let profileService = ProfileService.shared
+    
+    let profileImageService = ProfileImageService.shared
+
+    // MARK: - Private Properties
     private let ShowAuthViewSegueIdentifier = "ShowAuthView"
     
     private let oauth2Service = OAuth2Service.shared
     private let tokenStorage = OAuth2TokenStorage()
-    
-    let profileService = ProfileService.shared
-    
-    let profileImageService = ProfileImageService.shared
     
     private var isAuthorizing: Bool = false
     
@@ -28,7 +31,8 @@ final class SplashViewController: UIViewController {
         
         return view
     }()
-    
+
+    // MARK: - Overrides Methods
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
                 
@@ -52,7 +56,8 @@ final class SplashViewController: UIViewController {
     override var preferredStatusBarStyle: UIStatusBarStyle {
         .lightContent
     }
-    
+
+    // MARK: - Private Methods
     private func navigateToTabBarController() {
         guard let window = UIApplication.shared.windows.first else { fatalError("Invalid configuration") }
         let tabBarView = UIStoryboard(name: "Main", bundle: .main).instantiateViewController(withIdentifier: "TabBarViewController")
@@ -75,6 +80,7 @@ final class SplashViewController: UIViewController {
     }
 }
 
+// MARK: - AuthViewControllerDelegate
 extension SplashViewController: AuthViewControllerDelegate {
     func authViewController(_ vc: AuthViewController, didAuthenticateWith code: String) {
         oauth2Service.fetchOAuthToken(code: code) { [ weak self ] result in

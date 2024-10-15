@@ -9,12 +9,14 @@ import UIKit
 import Kingfisher
 
 final class ProfileViewController: UIViewController {
-    
+
+    // MARK: - Public Properties
     let profileService = ProfileService.shared
     
     let profileImageService = ProfileImageService.shared
     let profileLogoutService = ProfileLogoutService.shared
-    
+
+    // MARK: - Private Properties
     private var profileImageServiceObserver: NSObjectProtocol?
     
     private lazy var profileImageView: UIImageView = {
@@ -70,7 +72,8 @@ final class ProfileViewController: UIViewController {
         
         return button
     }()
-    
+
+    // MARK: - Overrides Methods
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -117,9 +120,11 @@ final class ProfileViewController: UIViewController {
         
         updateProfileDetails(with: profileService.profile)
     }
-    
+
+    // MARK: - IB Actions
     @IBAction private func exitButtonAction(_ sender: Any) { }
-    
+
+    // MARK: - Private Methods
     private func setConstraints(for imageView: UIImageView) {
         NSLayoutConstraint.activate([
             imageView.widthAnchor.constraint(equalToConstant: 70),
@@ -171,8 +176,8 @@ final class ProfileViewController: UIViewController {
         let alert = UIAlertController(title: "Пока, пока!", message: "Уверены, что хотите выйти?", preferredStyle: .alert)
         
         let cancelAction = UIAlertAction(title: "Нет", style: .default, handler: nil)
-        let logoutAction = UIAlertAction(title: "Да", style: .cancel) { _ in
-            self.profileLogoutService.logout() { [weak self] in
+        let logoutAction = UIAlertAction(title: "Да", style: .cancel) { [weak self] _ in
+            self?.profileLogoutService.logout() { [weak self] in
                 print("logged out successfully")
                 let splashViewController = SplashViewController()
                 splashViewController.modalPresentationStyle = .fullScreen

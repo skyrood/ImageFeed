@@ -21,24 +21,6 @@ struct ProfileResult: Codable {
     }
 }
 
-struct Profile {
-    var username: String
-    var firstName: String
-    var lastName: String
-    
-    var name: String {
-        let fullName = "\(firstName) \(lastName)"
-        return fullName
-    }
-    
-    var loginName: String {
-        let loginName = "@\(username)"
-        return loginName
-    }
-    
-    var bio: String
-}
-
 enum ProfileServiceError: Error {
     case invalidRequest
     case decodingError

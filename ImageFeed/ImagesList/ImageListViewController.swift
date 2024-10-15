@@ -10,15 +10,17 @@ import Kingfisher
 
 final class ImageListViewController: UIViewController {
     
+    // MARK: - IB Outlets
     @IBOutlet private var tableView: UITableView!
-    
+
+    // MARK: - Private Properties
     private var imageListService = ImageListService.shared
             
     private var photos: [Photo] = []
     
     private let showSingleImageSegueIdentifier = "ShowSingleImage"
-    
-    // changing status bar icons to white because the app background is dark
+
+    // MARK: - Overrides Methods
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
@@ -26,7 +28,6 @@ final class ImageListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Setting the insets for the table
         tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
         
         self.loadPhotos()
@@ -41,58 +42,15 @@ final class ImageListViewController: UIViewController {
                 assertionFailure("Invalid segue destination")
                 return
             }
-             
-            viewController.image = imageListService.photos[indexPath.row]
+            
+            viewController.setImage(with: imageListService.photos[indexPath.row])
         } else {
             super.prepare(for: segue, sender: sender)
         }
     }
-}
 
-extension ImageListViewController: UITableViewDataSource {
-    // method for setting the number of cells
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return imageListService.photos.count
-    }
-    
-    // method for creating or reusing cells
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: ImageListCell.reuseIdentifier, for: indexPath)
-        
-        guard let imageListCell = cell as? ImageListCell else {
-            print("creating ImageListCell failed")
-            return UITableViewCell()
-        }
-        
-        imageListCell.imageContainer.layer.cornerRadius = 16
-        imageListCell.imageContainer.layer.masksToBounds = true
-
-        configCell(for: imageListCell, with: indexPath)
-        return imageListCell
-    }
-    
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if indexPath.row == imageListService.photos.count - 1 {
-            self.loadPhotos()
-        }
-    }
-}
-
-extension ImageListViewController {
-    // method for filling custom cells
-    func configCell(for cell: ImageListCell, with indexPath: IndexPath) {
-        let photo = imageListService.photos[indexPath.row]
-        
-        cell.delegate = self
-        
-        cell.imageContainer.kf.setImage(with: URL(string: photo.regularImageURL))
-        
-        cell.dateLabel.text = photo.createdAt?.dateTimeString
-        
-        updateLikeButtonImage(for: cell, with: photo.isLiked)
-    }
-    
-    func updateTableViewAnimated() {
+    // MARK: - Private Methods
+    private func updateTableViewAnimated() {
         let oldCount = photos.count
         let newCount = imageListService.photos.count
         photos = imageListService.photos
@@ -119,6 +77,35 @@ extension ImageListViewController {
     }
 }
 
+// MARK: - UITableViewDataSource
+extension ImageListViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return imageListService.photos.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: ImageListCell.reuseIdentifier, for: indexPath)
+        
+        guard let imageListCell = cell as? ImageListCell else {
+            print("creating ImageListCell failed")
+            return UITableViewCell()
+        }
+
+        let photo = imageListService.photos[indexPath.row]
+        imageListCell.configure(with: photo, delegate: self)
+        imageListCell.updateLikeButtonImage(with: photo.isLiked)
+        
+        return imageListCell
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if indexPath.row == imageListService.photos.count - 1 {
+            self.loadPhotos()
+        }
+    }
+}
+
+// MARK: - ImageListCellDelegate
 extension ImageListViewController: ImageListCellDelegate {
     func didTapLikeButton(in cell: ImageListCell) {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
@@ -131,27 +118,22 @@ extension ImageListViewController: ImageListCellDelegate {
             case .success():
                 guard let self else { return }
                 photos[indexPath.row].isLiked = !photo.isLiked
-                self.updateLikeButtonImage(for: cell, with: photos[indexPath.row].isLiked)
-                UIBlockingProgressHUD.dismiss()
+                cell.updateLikeButtonImage(with: photos[indexPath.row].isLiked)
             case .failure(let error):
-                UIBlockingProgressHUD.dismiss()
+                print("[ImageListViewController.didTapLikeButton] Error: \(error.localizedDescription)")
             }
-        }
-    }
-    
-    private func updateLikeButtonImage(for cell: ImageListCell, with status: Bool) {
-        DispatchQueue.main.async {
-            cell.likeButton.setBackgroundImage(status ? UIImage(named: "LikeButtonOn") : UIImage(named: "LikeButtonOff"), for: .normal)
+            
+            UIBlockingProgressHUD.dismiss()
         }
     }
 }
 
+// MARK: - UITableViewDelegate
 extension ImageListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         performSegue(withIdentifier: showSingleImageSegueIdentifier, sender: indexPath)
     }
     
-    //     method for setting the cell height dynamically
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let image = imageListService.photos[indexPath.row]
         
