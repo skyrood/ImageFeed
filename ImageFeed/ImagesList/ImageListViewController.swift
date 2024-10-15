@@ -59,6 +59,7 @@ final class ImageListViewController: UIViewController {
                 let indexPaths = (oldCount..<newCount).map { i in
                     IndexPath(row: i, section: 0)
                 }
+                
                 tableView.insertRows(at: indexPaths, with: .automatic)
             } completion: { _ in }
         }

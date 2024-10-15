@@ -124,6 +124,7 @@ extension SplashViewController: AuthViewControllerDelegate {
             while let presentedViewController = topController.presentedViewController {
                 topController = presentedViewController
             }
+            
             topController.present(alertController, animated: true, completion: nil)
         }
     }

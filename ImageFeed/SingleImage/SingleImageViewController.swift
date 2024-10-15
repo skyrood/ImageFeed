@@ -44,6 +44,7 @@ final class SingleImageViewController: UIViewController {
         imageView.kf.setImage(with: URL(string: image.largeImageURL)) { _ in
             UIBlockingProgressHUD.dismiss()
         }
+        
         imageView.frame.size = image.size
         rescaleAndCenterImageInScrollView(image: image)
         
