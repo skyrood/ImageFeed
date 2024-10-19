@@ -36,10 +36,15 @@ struct UrlsResult: Decodable {
 }
 
 final class ImageListService {
+
+    // MARK: - Public Properties
     static let shared = ImageListService()
     
-    private init() {}
+    var requestConstructor: URLRequestConstructorProtocol
     
+    static let didChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange")
+
+    // MARK: - Private Properties
     private(set) var photos: [Photo] = []
     
     private var task: URLSessionTask?
@@ -47,9 +52,13 @@ final class ImageListService {
     private var lastLoadedPage: Int?
     
     private var imagesPerPage = 10
-    
-    static let didChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange")
-    
+
+    // MARK: - Initializers
+    private init() {
+        requestConstructor = URLRequestConstructor()
+    }
+
+    // MARK: - Public Methods
     func fetchPhotosNextPage( _ completion: @escaping (Result<[Photo], Error>) -> Void) {
         let nextPage = (lastLoadedPage ?? 0) + 1
         
@@ -60,7 +69,7 @@ final class ImageListService {
             URLQueryItem(name: "per_page", value: String(imagesPerPage))
         ]
         
-        guard let imageListRequest = UrlRequestConstructor.createRequest(path: path, queryItems: queryItems) else { return }
+        guard let imageListRequest = requestConstructor.createRequest(path: path, queryItems: queryItems) else { return }
                 
         if self.task != nil {
             self.task?.cancel()
@@ -97,7 +106,7 @@ final class ImageListService {
     
     func changeLike(photo id: String, isLike: Bool, completion: @escaping (Result<Void, Error>) -> Void) {
         let path = "/photos/\(id)/like"
-        guard var changeLikeRequest = UrlRequestConstructor.createRequest(path: path) else { return }
+        guard var changeLikeRequest = requestConstructor.createRequest(path: path, queryItems: []) else { return }
         changeLikeRequest.httpMethod = !isLike ? "POST" : "DELETE"
         
         if self.task != nil {

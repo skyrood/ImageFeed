@@ -83,7 +83,7 @@ final class AuthViewController: UIViewController {
     private func navigateToWebView() {
         let webViewViewController = WebViewViewController()
         
-        let authHelper = UrlRequestConstructor()
+        let authHelper = URLRequestConstructor()
         let webViewPresenter = WebViewPresenter(authHelper: authHelper)
         
         webViewPresenter.view = webViewViewController

@@ -20,19 +20,28 @@ struct image: Codable {
 }
 
 final class ProfileImageService {
+    
+    // MARK: - Public Properties
     static let shared = ProfileImageService()
     
-    private init() {}
+    var requestConstructor: URLRequestConstructorProtocol
     
+    static let didChangeNotification = Notification.Name(rawValue: "ProfileImageProviderDidChange")
+
+    // MARK: - Private Properties
     private var task: URLSessionTask?
     
     private(set) var userPicURL: String?
-    
-    static let didChangeNotification = Notification.Name(rawValue: "ProfileImageProviderDidChange")
-    
+
+    // MARK: - Initializers
+    private init() {
+        requestConstructor = URLRequestConstructor()
+    }
+
+    // MARK: - Public Methods
     func fetchProfileImageURL(username: String, _ completion: @escaping (Result<String, Error>) -> Void) {
                 
-        guard let userPicURLRequest = UrlRequestConstructor.createRequest(path: "/users/\(username)") else { return }
+        guard let userPicURLRequest = requestConstructor.createRequest(path: "/users/\(username)", queryItems: []) else { return }
         
         if self.task != nil {
             self.task?.cancel()

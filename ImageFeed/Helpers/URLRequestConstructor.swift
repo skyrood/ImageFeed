@@ -12,7 +12,11 @@ protocol AuthHelperProtocol {
     func code(from url: URL) -> String?
 }
 
-final class UrlRequestConstructor: AuthHelperProtocol {
+protocol URLRequestConstructorProtocol {
+    func createRequest(path: String, queryItems: [URLQueryItem]) -> URLRequest?
+}
+
+final class URLRequestConstructor: URLRequestConstructorProtocol, AuthHelperProtocol {
     
     let configuration: AuthConfiguration
     
@@ -20,7 +24,7 @@ final class UrlRequestConstructor: AuthHelperProtocol {
         self.configuration = configuration
     }
     
-    static func createRequest(path: String, queryItems: [URLQueryItem] = []) -> URLRequest? {
+    func createRequest(path: String, queryItems: [URLQueryItem] = []) -> URLRequest? {
         let tokenStorage = OAuth2TokenStorage()
         
         guard let token = tokenStorage.token else {

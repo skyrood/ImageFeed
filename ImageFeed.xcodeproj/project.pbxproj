@@ -37,7 +37,7 @@
 		97F1AB3D2C64CD96000BFA47 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 97F1AB3C2C64CD96000BFA47 /* Base */; };
 		97F1AB452C6664F4000BFA47 /* ImageListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97F1AB442C6664F4000BFA47 /* ImageListCell.swift */; };
 		97F3BD662CB102D1006584CE /* ImageListService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97F3BD652CB102CA006584CE /* ImageListService.swift */; };
-		97F3BD682CB12424006584CE /* UrlRequestConstructor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97F3BD672CB1241A006584CE /* UrlRequestConstructor.swift */; };
+		97F3BD682CB12424006584CE /* URLRequestConstructor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97F3BD672CB1241A006584CE /* URLRequestConstructor.swift */; };
 		97FBB45D2CBE8F0000C59B30 /* PhotoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97FBB45C2CBE8EFD00C59B30 /* PhotoModel.swift */; };
 		97FBB45F2CBE8F5100C59B30 /* ProfileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97FBB45E2CBE8F4C00C59B30 /* ProfileModel.swift */; };
 /* End PBXBuildFile section */
@@ -83,7 +83,7 @@
 		97F1AB3E2C64CD96000BFA47 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		97F1AB442C6664F4000BFA47 /* ImageListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageListCell.swift; sourceTree = "<group>"; };
 		97F3BD652CB102CA006584CE /* ImageListService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageListService.swift; sourceTree = "<group>"; };
-		97F3BD672CB1241A006584CE /* UrlRequestConstructor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlRequestConstructor.swift; sourceTree = "<group>"; };
+		97F3BD672CB1241A006584CE /* URLRequestConstructor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLRequestConstructor.swift; sourceTree = "<group>"; };
 		97FBB45C2CBE8EFD00C59B30 /* PhotoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoModel.swift; sourceTree = "<group>"; };
 		97FBB45E2CBE8F4C00C59B30 /* ProfileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -117,7 +117,7 @@
 			isa = PBXGroup;
 			children = (
 				97589B062CB16E6A00AEEB84 /* Date+Extension.swift */,
-				97F3BD672CB1241A006584CE /* UrlRequestConstructor.swift */,
+				97F3BD672CB1241A006584CE /* URLRequestConstructor.swift */,
 				976D1A4A2C9C8D9D00472ECC /* networkErrorLogger.swift */,
 				976D1A462C99DA5A00472ECC /* UIBlockingProgressHUD.swift */,
 				97B23FF42C6A77B50022C3F8 /* DateTimeFormatter.swift */,
@@ -380,7 +380,7 @@
 				97F1AB352C64CD91000BFA47 /* ImageListViewController.swift in Sources */,
 				97E999622C80833100627ECE /* WebViewViewController.swift in Sources */,
 				97B23FF92C6E5F7B0022C3F8 /* SingleImageViewController.swift in Sources */,
-				97F3BD682CB12424006584CE /* UrlRequestConstructor.swift in Sources */,
+				97F3BD682CB12424006584CE /* URLRequestConstructor.swift in Sources */,
 				976D1A472C99DA6B00472ECC /* UIBlockingProgressHUD.swift in Sources */,
 				97CE94F42CA6D9FD003DECB7 /* TabBarController.swift in Sources */,
 				97F1AB452C6664F4000BFA47 /* ImageListCell.swift in Sources */,
