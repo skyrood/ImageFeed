@@ -7,7 +7,18 @@
 
 import Foundation
 
-final class UrlRequestConstructor {
+protocol AuthHelperProtocol {
+    func authRequest() -> URLRequest?
+    func code(from url: URL) -> String?
+}
+
+final class UrlRequestConstructor: AuthHelperProtocol {
+    
+    let configuration: AuthConfiguration
+    
+    init(configuration: AuthConfiguration = .main) {
+        self.configuration = configuration
+    }
     
     static func createRequest(path: String, queryItems: [URLQueryItem] = []) -> URLRequest? {
         let tokenStorage = OAuth2TokenStorage()
@@ -40,6 +51,41 @@ final class UrlRequestConstructor {
         urlRequest.httpMethod = "GET"
         
         return urlRequest
+    }
+    
+    func authRequest() -> URLRequest? {
+        guard let url = authURL() else { return nil }
+        
+        return URLRequest(url: url)
+    }
+    
+    func authURL() -> URL? {
+        guard var urlComponents = URLComponents(string: configuration.unsplashAuthorizeURLString) else {
+            print("error while creating urlComponents")
+            return nil
+        }
+        
+        urlComponents.queryItems = [
+            URLQueryItem(name: "client_id", value: configuration.accessKey),
+            URLQueryItem(name: "redirect_uri", value: configuration.redirectURI),
+            URLQueryItem(name: "response_type", value: "code"),
+            URLQueryItem(name: "scope", value: configuration.accessScope),
+        ]
+        
+        return urlComponents.url
+    }
+    
+    func code(from url: URL) -> String? {
+        if
+            let urlComponents = URLComponents(string: url.absoluteString),
+            urlComponents.path == "/oauth/authorize/native",
+            let items = urlComponents.queryItems,
+            let codeItem = items.first(where: { $0.name == "code" })
+        {
+            return codeItem.value
+        } else {
+            return nil
+        }
     }
 }
 
