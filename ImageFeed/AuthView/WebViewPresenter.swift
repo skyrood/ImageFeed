@@ -15,8 +15,6 @@ public protocol WebViewPresenterProtocol {
 }
 
 final class WebViewPresenter: WebViewPresenterProtocol {
-    
-    // MARK: - IB Outlets
 
     // MARK: - Public Properties
     weak var view: WebViewViewControllerProtocol?
@@ -31,30 +29,8 @@ final class WebViewPresenter: WebViewPresenterProtocol {
         self.authHelper = authHelper
     }
 
-    // MARK: - Overrides Methods
-
-    // MARK: - IB Actions
-
     // MARK: - Public Methods
     func viewDidLoad() {
-//        guard var urlComponents = URLComponents(string: authConfig.unsplashAuthorizeURLString) else {
-//            print("error while creating urlComponents")
-//            return
-//        }
-//        
-//        urlComponents.queryItems = [
-//            URLQueryItem(name: "client_id", value: Constants.accessKey),
-//            URLQueryItem(name: "redirect_uri", value: Constants.redirectURI),
-//            URLQueryItem(name: "response_type", value: "code"),
-//            URLQueryItem(name: "scope", value: Constants.accessScope),
-//        ]
-//        
-//        guard let url = urlComponents.url else {
-//            print("Error while creating url from urlComponents")
-//            return
-//        }
-//        
-//        let request = URLRequest(url: url)
         guard let request = authHelper.authRequest() else { return }
         view?.load(request)
         
@@ -76,7 +52,4 @@ final class WebViewPresenter: WebViewPresenterProtocol {
     func code(from url: URL) -> String? {
         authHelper.code(from: url)
     }
-
-    // MARK: - Private Methods
-
 }

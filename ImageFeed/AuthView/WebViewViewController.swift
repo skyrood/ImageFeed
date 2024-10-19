@@ -26,10 +26,6 @@ final class WebViewViewController: UIViewController & WebViewViewControllerProto
     weak var delegate: WebViewViewControllerDelegate?
     
     var presenter: WebViewPresenterProtocol?
-    
-//    enum WebViewConstants {
-//        static let unsplashAuthorizeURLString = "https://unsplash.com/oauth/authorize"
-//    }
 
     // MARK: - Private Properties
     private var estimatedProgressObservation: NSKeyValueObservation?
@@ -75,7 +71,6 @@ final class WebViewViewController: UIViewController & WebViewViewControllerProto
              changeHandler: { [weak self] _, _ in
                  guard let self else { return }
                  
-//                 self.updateProgress()
                  presenter?.didUpdateProgressValue(webView.estimatedProgress)
              }
         )
@@ -136,11 +131,6 @@ final class WebViewViewController: UIViewController & WebViewViewControllerProto
             progressBar.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor)
         ])
     }
-//    
-//    private func updateProgress() {
-//        progressBar.progress = Float(webView.estimatedProgress)
-//        progressBar.isHidden = fabs(webView.estimatedProgress - 1.0) <= 0.0001
-//    }
 }
 
 // MARK: - WKNavigationDelegate
