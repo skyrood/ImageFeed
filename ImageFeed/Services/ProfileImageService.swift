@@ -19,7 +19,11 @@ struct image: Codable {
     let large: String
 }
 
-final class ProfileImageService {
+public protocol ProfileImageServiceProtocol {
+    var userPicURL: String? { get }
+}
+
+final class ProfileImageService: ProfileImageServiceProtocol {
     
     // MARK: - Public Properties
     static let shared = ProfileImageService()

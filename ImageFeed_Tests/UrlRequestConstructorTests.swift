@@ -12,7 +12,7 @@ final class UrlRequestConstructorTests: XCTestCase {
     func testUrlRequestConstructorAuthUrl() {
         //given
         let configuration = AuthConfiguration.main
-        let authHelper = UrlRequestConstructor(configuration: configuration)
+        let authHelper = URLRequestConstructor(configuration: configuration)
         
         //when
         let url = authHelper.authURL()
@@ -37,7 +37,7 @@ final class UrlRequestConstructorTests: XCTestCase {
         
         urlComponents.queryItems = queryItems
         
-        let code = UrlRequestConstructor().code(from: urlComponents.url!)
+        let code = URLRequestConstructor().code(from: urlComponents.url!)
         
         XCTAssertEqual(code, "test_code")
     }

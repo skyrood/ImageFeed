@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol ProfileViewPresenterProtocol {
+public protocol ProfileViewPresenterProtocol {
     var view: ProfileViewControllerProtocol? { get set }
     
     func avatarURL() -> URL?
@@ -16,7 +16,7 @@ protocol ProfileViewPresenterProtocol {
     func logout()
 }
 
-struct ProfileDetails {
+public struct ProfileDetails {
     let name: String
     let username: String
     let bio: String
@@ -33,13 +33,21 @@ final class ProfileViewPresenter: ProfileViewPresenterProtocol {
     // MARK: - Public Properties
     weak var view: ProfileViewControllerProtocol?
     
-    let profileService = ProfileService.shared
-    
-    let profileImageService = ProfileImageService.shared
-    let profileLogoutService = ProfileLogoutService.shared
+    var profileService: ProfileServiceProtocol
+    var profileImageService: ProfileImageServiceProtocol
+    var profileLogoutService: ProfileLogoutServiceProtocol
     
     // MARK: - Private Properties
     private var profileImageServiceObserver: NSObjectProtocol?
+    
+    // MARK: - Initializers
+    init(profileService: ProfileServiceProtocol,
+         profileLogoutService: ProfileLogoutServiceProtocol,
+         profileImageService: ProfileImageServiceProtocol) {
+        self.profileService = profileService
+        self.profileLogoutService = profileLogoutService
+        self.profileImageService = profileImageService
+    }
     
     // MARK: - Public Methods
     func profileDetails() -> ProfileDetails? {

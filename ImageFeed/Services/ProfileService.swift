@@ -26,7 +26,11 @@ enum ProfileServiceError: Error {
     case decodingError
 }
 
-final class ProfileService {
+protocol ProfileServiceProtocol {
+    var profile: Profile? { get }
+}
+
+final class ProfileService: ProfileServiceProtocol {
 
     // MARK: - Public Properties
     static let shared = ProfileService()

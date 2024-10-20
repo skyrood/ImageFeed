@@ -8,7 +8,7 @@
 import UIKit
 import Kingfisher
 
-protocol ProfileViewControllerProtocol: AnyObject {
+public protocol ProfileViewControllerProtocol: AnyObject {
     var presenter: ProfileViewPresenterProtocol? { get set }
     
     var nameLabel: UILabel { get set }
@@ -166,7 +166,6 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
     }
     
     private func updateProfileDetails() {
-        print("presenting profile...")
         let profileDetails = presenter?.profileDetails()
         
         nameLabel.text = profileDetails?.name

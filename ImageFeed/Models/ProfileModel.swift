@@ -7,7 +7,7 @@
 
 import UIKit
 
-struct Profile {
+public struct Profile {
     var username: String
     var firstName: String
     var lastName: String

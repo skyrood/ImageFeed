@@ -27,7 +27,7 @@ final class WebViewTests: XCTestCase {
     func testPresenterCallsLoadRequest() {
         //given
         let viewController = WebViewViewControllerSpy()
-        let authHelper = UrlRequestConstructor()
+        let authHelper = URLRequestConstructor()
         let presenter = WebViewPresenter(authHelper: authHelper)
         
         viewController.presenter = presenter
@@ -42,7 +42,7 @@ final class WebViewTests: XCTestCase {
     
     func testProgressVisibleWhenLessThenOne() {
         //given
-        let authHepler = UrlRequestConstructor()
+        let authHepler = URLRequestConstructor()
         let presenter = WebViewPresenter(authHelper: authHepler)
         let progress: Float = 0.666
         
@@ -55,7 +55,7 @@ final class WebViewTests: XCTestCase {
     
     func testProgressHiddenWhenOne() {
         //given
-        let authHepler = UrlRequestConstructor()
+        let authHepler = URLRequestConstructor()
         let presenter = WebViewPresenter(authHelper: authHepler)
         let progress: Float = 1
         
