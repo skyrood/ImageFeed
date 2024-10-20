@@ -22,7 +22,7 @@ final class WebViewPresenter: WebViewPresenterProtocol {
     var authHelper: AuthHelperProtocol
 
     // MARK: - Private Properties
-    private let authConfig = AuthConfiguration.main
+    private let authConfig = AuthConfiguration.secondary
 
     // MARK: - Initializers
     init(authHelper: AuthHelperProtocol) {

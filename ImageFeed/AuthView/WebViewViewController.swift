@@ -58,6 +58,8 @@ final class WebViewViewController: UIViewController & WebViewViewControllerProto
         
         view.allowsBackForwardNavigationGestures = true
         
+        view.accessibilityIdentifier = "UnsplashWebView" 
+        
         return view
     }()
 
