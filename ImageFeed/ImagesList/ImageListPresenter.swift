@@ -24,11 +24,10 @@ final class ImageListPresenter: ImageListPresenterProtocol {
     // MARK: - Public Properties
     var view: ImageListViewControllerProtocol?
     
-    var imageListService: ImageListServiceProtocol
-    
     var photos: [Photo] = []
     
     // MARK: - Private Properties
+    private var imageListService: ImageListServiceProtocol
     
     // MARK: - Initializers
     init(imageListService: ImageListServiceProtocol) {
@@ -51,7 +50,7 @@ final class ImageListPresenter: ImageListPresenterProtocol {
     
     func loadNextPhotos(forRowAt indexPath: IndexPath) {
         if indexPath.row == imageListService.photos.count - 1 {
-            self.loadPhotos()
+            loadPhotos()
         }
     }
     

@@ -98,7 +98,7 @@ final class WebViewViewController: UIViewController & WebViewViewControllerProto
     }
     
     func setProgressValue(_ newValue: Float) {
-        progressBar.progress = newValue
+        progressBar.setProgress(newValue, animated: true)
     }
 
     func setProgressHidden(_ isHidden: Bool) {
