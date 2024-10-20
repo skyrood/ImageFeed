@@ -28,7 +28,11 @@ final class OAuth2Service {
     
     private let tokenStorage = OAuth2TokenStorage()
     
-    private init() {}
+    let configuration: AuthConfiguration
+    
+    private init(configuration: AuthConfiguration = .main) {
+        self.configuration = configuration
+    }
     
     private func makeOAuthTokenRequest(code: String) -> URLRequest? {
         let baseUrl = "https://unsplash.com"
@@ -42,9 +46,9 @@ final class OAuth2Service {
         urlComponents.path = path
         
         urlComponents.queryItems = [
-            URLQueryItem(name: "client_id", value: Constants.accessKey),
-            URLQueryItem(name: "client_secret", value: Constants.secretKey),
-            URLQueryItem(name: "redirect_uri", value: Constants.redirectURI),
+            URLQueryItem(name: "client_id", value: configuration.accessKey),
+            URLQueryItem(name: "client_secret", value: configuration.secretKey),
+            URLQueryItem(name: "redirect_uri", value: configuration.redirectURI),
             URLQueryItem(name: "code", value: code),
             URLQueryItem(name: "grant_type", value: "authorization_code"),
         ]

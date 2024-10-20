@@ -7,8 +7,8 @@
 
 import UIKit
 
-struct Photo {
-    let id: String
+public struct Photo {
+    public let id: String
     let size: CGSize
     let createdAt: Date?
     let welcomeDescription: String?

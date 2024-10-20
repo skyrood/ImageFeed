@@ -11,7 +11,7 @@ protocol ImageListCellDelegate: AnyObject {
     func didTapLikeButton(in cell: ImageListCell)
 }
 
-final class ImageListCell: UITableViewCell {
+open class ImageListCell: UITableViewCell {
     
     // MARK: - IB Outlets
     @IBOutlet private weak var imageContainer: UIImageView!
@@ -44,6 +44,7 @@ final class ImageListCell: UITableViewCell {
     
     func updateLikeButtonImage(with status: Bool) {
         DispatchQueue.main.async {
+            self.likeButton.accessibilityIdentifier = status ? "LikeButtonOn" : "LikeButtonOff"
             self.likeButton.setBackgroundImage(status ? UIImage(named: "LikeButtonOn") : UIImage(named: "LikeButtonOff"), for: .normal)
         }
     }

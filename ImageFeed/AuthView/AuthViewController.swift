@@ -42,6 +42,8 @@ final class AuthViewController: UIViewController {
         
         button.addTarget(self, action: #selector(signinButtonTapped), for: .touchUpInside)
         
+        button.accessibilityIdentifier = "Authenticate"
+        
         return button
     }()
 
@@ -81,10 +83,17 @@ final class AuthViewController: UIViewController {
     }
     
     private func navigateToWebView() {
-        let vc = WebViewViewController()
-        vc.delegate = self
-        vc.modalPresentationStyle = .fullScreen
-        present(vc, animated: true)
+        let webViewViewController = WebViewViewController()
+        
+        let authHelper = URLRequestConstructor()
+        let webViewPresenter = WebViewPresenter(authHelper: authHelper)
+        
+        webViewPresenter.view = webViewViewController
+        webViewViewController.presenter = webViewPresenter
+        webViewViewController.delegate = self
+        
+        webViewViewController.modalPresentationStyle = .fullScreen
+        present(webViewViewController, animated: true)
     }
 }
 

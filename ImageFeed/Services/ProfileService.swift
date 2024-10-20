@@ -26,16 +26,28 @@ enum ProfileServiceError: Error {
     case decodingError
 }
 
-final class ProfileService {
-    
+protocol ProfileServiceProtocol {
+    var profile: Profile? { get }
+}
+
+final class ProfileService: ProfileServiceProtocol {
+
+    // MARK: - Public Properties
     static let shared = ProfileService()
     
+    var requestConstructor: URLRequestConstructorProtocol
+
+    // MARK: - Private Properties
     private(set) var profile: Profile?
     
     private var task: URLSessionTask?
-    
-    private init() {}
-    
+
+    // MARK: - Initializers
+    private init() {
+        requestConstructor = URLRequestConstructor()
+    }
+
+    // MARK: - Public Methods
     func fetchProfile(completion: @escaping (Result<Profile, Error>) -> Void) {
         assert(Thread.isMainThread)
         
@@ -43,7 +55,7 @@ final class ProfileService {
             self.task?.cancel()
         }
         
-        guard let profileRequest = UrlRequestConstructor.createRequest(path: "/me") else {
+        guard let profileRequest = requestConstructor.createRequest(path: "/me", queryItems: []) else {
             completion(.failure(ProfileServiceError.invalidRequest))
             return
         }

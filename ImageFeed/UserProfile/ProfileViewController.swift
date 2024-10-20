@@ -8,18 +8,25 @@
 import UIKit
 import Kingfisher
 
-final class ProfileViewController: UIViewController {
+public protocol ProfileViewControllerProtocol: AnyObject {
+    var presenter: ProfilePresenterProtocol? { get set }
+    
+    var nameLabel: UILabel { get set }
+    var usernameLabel: UILabel { get set }
+    var statusMessageLabel: UILabel { get set }
+    var profileImageView: UIImageView { get set }
+    
+    func updateAvatar()
+    func navigate(to vc: UIViewController)
+    
+}
+
+final class ProfileViewController: UIViewController & ProfileViewControllerProtocol {
 
     // MARK: - Public Properties
-    let profileService = ProfileService.shared
+    var presenter: ProfilePresenterProtocol?
     
-    let profileImageService = ProfileImageService.shared
-    let profileLogoutService = ProfileLogoutService.shared
-
-    // MARK: - Private Properties
-    private var profileImageServiceObserver: NSObjectProtocol?
-    
-    private lazy var profileImageView: UIImageView = {
+    lazy var profileImageView: UIImageView = {
         let view = UIImageView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.cornerRadius = 35
@@ -29,7 +36,7 @@ final class ProfileViewController: UIViewController {
         return view
     }()
     
-    private lazy var nameLabel: UILabel = {
+    lazy var nameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = ""
@@ -40,7 +47,7 @@ final class ProfileViewController: UIViewController {
         return label
     }()
     
-    private lazy var usernameLabel: UILabel = {
+    lazy var usernameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = ""
@@ -51,7 +58,7 @@ final class ProfileViewController: UIViewController {
         return label
     }()
     
-    private lazy var statusMessageLabel: UILabel = {
+    lazy var statusMessageLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = ""
@@ -61,7 +68,8 @@ final class ProfileViewController: UIViewController {
         
         return label
     }()
-    
+
+    // MARK: - Private Properties
     private lazy var exitButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -77,15 +85,7 @@ final class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        profileImageServiceObserver = NotificationCenter.default.addObserver(forName: ProfileImageService.didChangeNotification,
-                                                                             object: nil,
-                                                                             queue: .main) { [weak self] _ in
-            guard let self = self else {
-                return
-            }
-            
-            self.updateAvatar()
-        }
+        presenter?.viewDidLoad()
         
         updateAvatar()
         
@@ -119,11 +119,22 @@ final class ProfileViewController: UIViewController {
         
         setConstraints(for: exitButton, relativeTo: profileImageView)
         
-        updateProfileDetails(with: profileService.profile)
+        updateProfileDetails()
     }
 
     // MARK: - IB Actions
     @IBAction private func exitButtonAction(_ sender: Any) { }
+    
+    // MARK: - Public Methods
+    func updateAvatar() {
+        let url = presenter?.avatarURL()
+        
+        profileImageView.kf.setImage(with: url, placeholder: UIImage(named: "UserAvatarPlaceholder"))
+    }
+    
+    func navigate(to vc: UIViewController) {
+        self.present(vc, animated: true, completion: nil)
+    }
 
     // MARK: - Private Methods
     private func setConstraints(for imageView: UIImageView) {
@@ -154,19 +165,12 @@ final class ProfileViewController: UIViewController {
         ])
     }
     
-    private func updateProfileDetails(with profile: Profile?) {
-        nameLabel.text = profileService.profile?.name
-        usernameLabel.text = profileService.profile?.loginName
-        statusMessageLabel.text = profileService.profile?.bio
-    }
-    
-    private func updateAvatar() {
-        guard
-            let profileImageURL = profileImageService.userPicURL,
-            let url = URL(string: profileImageURL)
-        else { return }
+    private func updateProfileDetails() {
+        let profileDetails = presenter?.profileDetails()
         
-        profileImageView.kf.setImage(with: url, placeholder: UIImage(named: "UserAvatarPlaceholder"))
+        nameLabel.text = profileDetails?.name
+        usernameLabel.text = profileDetails?.username
+        statusMessageLabel.text = profileDetails?.bio
     }
     
     @objc private func logout() {
@@ -178,12 +182,7 @@ final class ProfileViewController: UIViewController {
         
         let cancelAction = UIAlertAction(title: "Нет", style: .default, handler: nil)
         let logoutAction = UIAlertAction(title: "Да", style: .cancel) { [weak self] _ in
-            self?.profileLogoutService.logout() { [weak self] in
-                print("logged out successfully")
-                let splashViewController = SplashViewController()
-                splashViewController.modalPresentationStyle = .fullScreen
-                self?.present(splashViewController, animated: true, completion: nil)
-            }
+            self?.presenter?.logout()
         }
         
         alert.addAction(logoutAction)
