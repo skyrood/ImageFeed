@@ -1,5 +1,5 @@
 //
-//  Constants.swift
+//  AuthConfiguration.swift
 //  ImageFeed
 //
 //  Created by Rodion Kim on 28/08/2024.

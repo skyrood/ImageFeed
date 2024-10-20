@@ -20,7 +20,7 @@ final class URLRequestConstructor: URLRequestConstructorProtocol, AuthHelperProt
     
     let configuration: AuthConfiguration
     
-    init(configuration: AuthConfiguration = .secondary) {
+    init(configuration: AuthConfiguration = .main) {
         self.configuration = configuration
     }
     

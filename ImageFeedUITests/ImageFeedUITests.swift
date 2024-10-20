@@ -64,8 +64,11 @@ final class ImageFeedUITests: XCTestCase {
         
         let cellToLike = tablesQuery.children(matching: .cell).element(boundBy: 1)
         
-        cellToLike.buttons["like button off"].tap()
-        cellToLike.buttons["like button on"].tap()
+        cellToLike.buttons["LikeButtonOff"].tap()
+        
+        sleep(3)
+        
+        cellToLike.buttons["LikeButtonOn"].tap()
         
         sleep(2)
         
@@ -86,7 +89,7 @@ final class ImageFeedUITests: XCTestCase {
     func testProfile() throws {
         // тестируем сценарий профиля
         
-        sleep(3)
+        sleep(10)
         app.tabBars.buttons.element(boundBy: 1).tap()
         
         XCTAssertTrue(app.staticTexts["Name Lastname"].exists)

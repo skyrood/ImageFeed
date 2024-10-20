@@ -44,6 +44,7 @@ open class ImageListCell: UITableViewCell {
     
     func updateLikeButtonImage(with status: Bool) {
         DispatchQueue.main.async {
+            self.likeButton.accessibilityIdentifier = status ? "LikeButtonOn" : "LikeButtonOff"
             self.likeButton.setBackgroundImage(status ? UIImage(named: "LikeButtonOn") : UIImage(named: "LikeButtonOff"), for: .normal)
         }
     }
