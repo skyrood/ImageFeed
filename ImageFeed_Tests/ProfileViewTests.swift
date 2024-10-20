@@ -12,7 +12,7 @@ final class ProfileViewTests: XCTestCase {
     func testViewControllerCallsViewDidLoad() {
         //given
         let viewController = ProfileViewController()
-        let presenter = ProfileViewPresenterSpy()
+        let presenter = ProfilePresenterSpy()
         
         viewController.presenter = presenter
         presenter.view = viewController
@@ -39,9 +39,9 @@ final class ProfileViewTests: XCTestCase {
         let mockProfileImageService = MockProfileImageService()
         let mockLogoutService = MockLogoutService()
         
-        let presenter = ProfileViewPresenter(profileService: mockProfileService,
-                                             profileLogoutService: mockLogoutService,
-                                             profileImageService: mockProfileImageService)
+        let presenter = ProfilePresenter(profileService: mockProfileService,
+                                         profileLogoutService: mockLogoutService,
+                                         profileImageService: mockProfileImageService)
         
         presenter.profileService = mockProfileService
         
@@ -66,9 +66,9 @@ final class ProfileViewTests: XCTestCase {
         let mockProfileImageService = MockProfileImageService()
         let mockLogoutService = MockLogoutService()
         
-        let presenter = ProfileViewPresenter(profileService: mockProfileService,
-                                             profileLogoutService: mockLogoutService,
-                                             profileImageService: mockProfileImageService)
+        let presenter = ProfilePresenter(profileService: mockProfileService,
+                                         profileLogoutService: mockLogoutService,
+                                         profileImageService: mockProfileImageService)
         presenter.view = mockView
         
         //when
@@ -87,9 +87,9 @@ final class ProfileViewTests: XCTestCase {
         let mockProfileImageService = MockProfileImageService()
         let mockLogoutService = MockLogoutService()
         
-        let presenter = ProfileViewPresenter(profileService: mockProfileService,
-                                             profileLogoutService: mockLogoutService,
-                                             profileImageService: mockProfileImageService)
+        let presenter = ProfilePresenter(profileService: mockProfileService,
+                                         profileLogoutService: mockLogoutService,
+                                         profileImageService: mockProfileImageService)
         
         //when
         let avatarURL = presenter.avatarURL()
@@ -105,9 +105,9 @@ final class ProfileViewTests: XCTestCase {
         let mockProfileImageService = MockProfileImageService()
         let mockLogoutService = MockLogoutService()
         
-        let presenter = ProfileViewPresenter(profileService: mockProfileService,
-                                             profileLogoutService: mockLogoutService,
-                                             profileImageService: mockProfileImageService)
+        let presenter = ProfilePresenter(profileService: mockProfileService,
+                                         profileLogoutService: mockLogoutService,
+                                         profileImageService: mockProfileImageService)
         
         mockProfileImageService.userPicURL = nil
         

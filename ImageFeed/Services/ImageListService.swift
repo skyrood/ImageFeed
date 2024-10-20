@@ -35,7 +35,14 @@ struct UrlsResult: Decodable {
     let thumb: String
 }
 
-final class ImageListService {
+public protocol ImageListServiceProtocol {
+    var photos: [Photo] { get }
+    
+    func fetchPhotosNextPage( _ completion: @escaping (Result<[Photo], Error>) -> Void)
+    func changeLike(photo id: String, isLike: Bool, completion: @escaping (Result<Void, Error>) -> Void)
+}
+
+final class ImageListService: ImageListServiceProtocol {
 
     // MARK: - Public Properties
     static let shared = ImageListService()

@@ -9,7 +9,7 @@ import UIKit
 import ImageFeed
 
 class MockProfileViewController: ProfileViewControllerProtocol {
-    var presenter: (any ImageFeed.ProfileViewPresenterProtocol)?
+    var presenter: (any ImageFeed.ProfilePresenterProtocol)?
     
     var nameLabel: UILabel = UILabel()
     

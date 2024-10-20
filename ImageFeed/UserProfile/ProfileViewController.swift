@@ -9,7 +9,7 @@ import UIKit
 import Kingfisher
 
 public protocol ProfileViewControllerProtocol: AnyObject {
-    var presenter: ProfileViewPresenterProtocol? { get set }
+    var presenter: ProfilePresenterProtocol? { get set }
     
     var nameLabel: UILabel { get set }
     var usernameLabel: UILabel { get set }
@@ -24,7 +24,7 @@ public protocol ProfileViewControllerProtocol: AnyObject {
 final class ProfileViewController: UIViewController & ProfileViewControllerProtocol {
 
     // MARK: - Public Properties
-    var presenter: ProfileViewPresenterProtocol?
+    var presenter: ProfilePresenterProtocol?
     
     lazy var profileImageView: UIImageView = {
         let view = UIImageView()

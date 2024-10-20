@@ -1,5 +1,5 @@
 //
-//  ProfileViewPresenter.swift
+//  ProfilePresenter.swift
 //  ImageFeed
 //
 //  Created by Rodion Kim on 19/10/2024.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-public protocol ProfileViewPresenterProtocol {
+public protocol ProfilePresenterProtocol {
     var view: ProfileViewControllerProtocol? { get set }
     
     func avatarURL() -> URL?
@@ -28,7 +28,7 @@ public struct ProfileDetails {
     }
 }
 
-final class ProfileViewPresenter: ProfileViewPresenterProtocol {
+final class ProfilePresenter: ProfilePresenterProtocol {
     
     // MARK: - Public Properties
     weak var view: ProfileViewControllerProtocol?
