@@ -11,7 +11,7 @@ protocol ImageListCellDelegate: AnyObject {
     func didTapLikeButton(in cell: ImageListCell)
 }
 
-final class ImageListCell: UITableViewCell {
+open class ImageListCell: UITableViewCell {
     
     // MARK: - IB Outlets
     @IBOutlet private weak var imageContainer: UIImageView!

@@ -26,8 +26,9 @@ final class ImageListPresenter: ImageListPresenterProtocol {
     
     var imageListService: ImageListServiceProtocol
     
+    var photos: [Photo] = []
+    
     // MARK: - Private Properties
-    private var photos: [Photo] = []
     
     // MARK: - Initializers
     init(imageListService: ImageListServiceProtocol) {
@@ -36,7 +37,6 @@ final class ImageListPresenter: ImageListPresenterProtocol {
     
     // MARK: - Public Methods
     func loadPhotos() {
-        print("loading photos...")
         imageListService.fetchPhotosNextPage() { [weak self] result in
             switch result {
             case .success:
@@ -66,6 +66,8 @@ final class ImageListPresenter: ImageListPresenterProtocol {
             print("creating ImageListCell failed")
             return UITableViewCell()
         }
+        
+        print(imageListService.photos.count)
         
         let photo = imageListService.photos[indexPath.row]
         imageListCell.configure(with: photo, delegate: self)

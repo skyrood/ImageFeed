@@ -7,7 +7,7 @@
 
 import UIKit
 
-struct PhotoResult: Decodable {
+public struct PhotoResult: Decodable {
     let id: String
     let width: Int
     let height: Int
@@ -27,7 +27,7 @@ struct PhotoResult: Decodable {
     }
 }
 
-struct UrlsResult: Decodable {
+public struct UrlsResult: Decodable {
     let raw: String
     let full: String
     let regular: String
